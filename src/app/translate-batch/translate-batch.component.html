@@ -1,0 +1,35 @@
+<form [formGroup]="batchForm">
+  <label class="batch-label">
+    Name:
+    <input type="text" formControlName="name" placeholder="Name of batch" required>
+  </label>
+  <label class="batch-label">
+    Limit to concepts:
+    <textarea type="text" formControlName="ecl" placeholder="ECL"></textarea>
+  </label>
+  <label class="batch-label">
+    English term:
+    <textarea type="text" formControlName="enTerm" placeholder="term" ></textarea>
+  </label>
+  <label class="batch-label">
+    English expression:
+    <textarea type="text" formControlName="enExp" placeholder="regexp" ></textarea>
+  </label>
+  <label class="batch-label">
+    Swedish expression:
+    <textarea type="text" formControlName="svExp" placeholder="regexp" required></textarea>
+  </label>
+  <button (click)="search()">Search</button>
+</form>
+<p>
+  value: {{ batchForm.value | json }}
+</p>
+<p>
+  status: {{ batchForm.status }}
+</p>
+<ul>
+  <li *ngFor="let item of descriptions">
+    {{ item | json }}
+  </li>
+</ul>
+

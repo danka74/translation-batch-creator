@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "translation-batch-creator"
+    }
+  },
+  "defaultProject": "translation-batch-creator",
+  "cli": {
+    "analytics": false
+  }
 }
