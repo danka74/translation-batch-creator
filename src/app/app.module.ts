@@ -8,6 +8,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslateBatchComponent } from './translate-batch/translate-batch.component';
 import { SnomedService } from './snomed.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+
 
 @NgModule({
   declarations: [
@@ -20,6 +23,8 @@ import { SnomedService } from './snomed.service';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
   ],
   providers: [SnomedService],
   bootstrap: [AppComponent]
