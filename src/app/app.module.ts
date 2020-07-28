@@ -10,12 +10,25 @@ import { TranslateBatchComponent } from './translate-batch/translate-batch.compo
 import { SnomedService } from './snomed.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CriteriaComponent } from './criteria/criteria.component';
+import { BatchSettingsComponent } from './batch-settings/batch-settings.component';
+import { ReplaceComponent } from './replace/replace.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TranslateBatchComponent
+    TranslateBatchComponent,
+    CriteriaComponent,
+    BatchSettingsComponent,
+    ReplaceComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +37,15 @@ import { MatSliderModule } from '@angular/material/slider';
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     MatSliderModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
   ],
   providers: [SnomedService],
   bootstrap: [AppComponent]

@@ -1,35 +1,36 @@
-<form [formGroup]="batchForm">
-  <label class="batch-label">
-    Name:
-    <input type="text" formControlName="name" placeholder="Name of batch" required>
-  </label>
-  <label class="batch-label">
-    Limit to concepts:
-    <textarea type="text" formControlName="ecl" placeholder="ECL"></textarea>
-  </label>
-  <label class="batch-label">
-    English term:
-    <textarea type="text" formControlName="enTerm" placeholder="term" ></textarea>
-  </label>
-  <label class="batch-label">
-    English expression:
-    <textarea type="text" formControlName="enExp" placeholder="regexp" ></textarea>
-  </label>
-  <label class="batch-label">
-    Swedish expression:
-    <textarea type="text" formControlName="svExp" placeholder="regexp" required></textarea>
-  </label>
-  <button (click)="search()">Search</button>
-</form>
-<p>
-  value: {{ batchForm.value | json }}
-</p>
-<p>
-  status: {{ batchForm.status }}
-</p>
-<ul>
-  <li *ngFor="let item of descriptions">
-    {{ item | json }}
-  </li>
-</ul>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <app-batch-settings></app-batch-settings>
+  <app-criteria></app-criteria>
+  <app-replace></app-replace>
+</div>
+
+<br/>
+<button mat-button (click)="run()" id="run-button">Run</button>
+
+<mat-card class="batch">
+  <mat-card-title>Results</mat-card-title>
+  <mat-card-content>
+    <mat-table [dataSource]="results">
+      <ng-container matColumnDef="conceptId">
+        <mat-header-cell *matHeaderCellDef>Concept Id</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.conceptId}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descriptions">
+        <mat-header-cell *matHeaderCellDef>Existing Descriptions</mat-header-cell>
+        <mat-cell *matCellDef="let element"> <div [innerHtml]="element.descriptionsDisplay"></div> </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="newTerms">
+        <mat-header-cell *matHeaderCellDef>New Descriptions</mat-header-cell>
+        <mat-cell *matCellDef="let element"> <div [innerHtml]="element.newDescriptionsDisplay"></div> </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <br/>
+    <mat-spinner class="spinner" diameter="30" *ngIf="running"></mat-spinner>
+  </mat-card-content>
+</mat-card>
 

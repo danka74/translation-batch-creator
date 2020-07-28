@@ -1,0 +1,63 @@
+<mat-card class="batch">
+  <mat-card-title>Replace</mat-card-title>
+  <mat-card-content>
+    <mat-table [dataSource]="replace">
+
+      <ng-container matColumnDef="lang">
+        <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.lang === 'sv' ? 'Swedish' : 'English'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="replace">
+        <mat-header-cell *matHeaderCellDef>Replace</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.replace}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="replaceWith">
+        <mat-header-cell *matHeaderCellDef>Replace With</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.replaceWith}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="buttons">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index">
+          <button mat-icon-button (click)="remove(i)"><mat-icon>clear</mat-icon></button>
+          <button mat-icon-button (click)="copy(i)"><mat-icon>content_copy</mat-icon></button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <!-- <div *ngFor="let c of criteria; index as i;" fxLayout="row">
+        <div fxFlex="15">{{c.present ? 'Present' : 'Not present'}}</div>
+        <div fxFlex="15">{{c.lang === 'sv' ? 'Swedish' : 'English'}}</div>
+        <div fxFlex="100">{{c.regexp}}</div>
+        <button mat-icon-button (click)="remove(i)" fxFlex="10"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button (click)="copy(i)" fxFlex="10"><mat-icon>content_copy</mat-icon></button>
+      </div> -->
+    </mat-table>
+    <br/>
+    <div fxLayout="row wrap" >
+      <form [formGroup]="replaceForm">
+        <mat-form-field fxFlex="15">
+          <mat-label>Language</mat-label>
+          <select matNativeControl required formControlName="lang">
+            <option value="sv">Swedish</option>
+            <option value="en">English</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field fxFlex="100">
+          <mat-label>Replace</mat-label>
+          <input matInput type="text" formControlName="replace">
+        </mat-form-field>
+        <mat-form-field fxFlex="100">
+          <mat-label>Replace With</mat-label>
+          <input matInput type="text" formControlName="replaceWith">
+        </mat-form-field>
+
+        <button mat-icon-button (click)="add()"><mat-icon>add_circle_outline</mat-icon></button>
+        <button mat-icon-button (click)="clearForm()"><mat-icon>clear</mat-icon></button>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
