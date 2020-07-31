@@ -11,6 +11,12 @@ const langRefsetMap: Record<string, string> = {
   sv: '46011000052107',
 };
 
+const caseSignificanceMap: Record<string, string> = {
+  CASE_INSENSITIVE: 'ci',
+  ENTIRE_TERM_CASE_SENSITIVE: 'CS',
+  INITIAL_CHARACTER_CASE_INSENSITIVE: 'cI',
+}
+
 interface ResultsDisplay {
   conceptId: string;
   descriptionsDisplay: string;
@@ -23,7 +29,7 @@ interface NewDescription {
   lang: string; // the language
   caseSignificance: string; // the case significance of the existing description
   descriptionId: string; // the description id of the existing description
-  acceptability: string; // acceptability of the existing description
+  acceptability: string; // caseSignificanceMapacceptability of the existing description
 }
 
 interface Result {
@@ -138,10 +144,10 @@ export class TranslateBatchComponent implements OnInit {
           console.log(this.batchSettings.batchSettingsForm.get('type').value);
           switch (this.batchSettings.batchSettingsForm.get('type').value) {
             case 'newDescSyn':
-              newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${d.caseSignificance}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+              newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
               break;
             case 'replaceDesc':
-              newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${d.caseSignificance}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+              newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
               inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
               break;
             default:
