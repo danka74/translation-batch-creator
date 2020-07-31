@@ -74,5 +74,6 @@ export class ReplaceComponent implements OnInit {
 
   copy(index: number) {
     this.replaceForm.setValue(this.replace[index]);
+    this.replaceForm.markAsDirty();
   }
 }

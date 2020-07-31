@@ -42,7 +42,7 @@
       </mat-table>
       <br/>
         <form [formGroup]="criteriaForm">
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.3em">
+      <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
 
           <mat-form-field fxFlex="5em">
             <select matNativeControl required formControlName="present">
@@ -60,10 +60,14 @@
           <mat-form-field fxFlex>
             <mat-label>Regular expression</mat-label>
             <input matInput type="text" formControlName="regexp">
+            <mat-error>Regular expression required</mat-error>
           </mat-form-field>
 
           <button fxFlex="2em" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
           <button fxFlex="2em" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
+          <div *ngIf="criteriaForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
+            Criteria already exists
+          </div>
       </div>
         </form>
     </mat-expansion-panel>

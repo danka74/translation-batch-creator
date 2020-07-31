@@ -43,7 +43,7 @@
       </mat-table>
       <br/>
         <form [formGroup]="replaceForm">
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.3em">
+      <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
           <mat-form-field fxFlex="5em">
             <mat-label>Language</mat-label>
             <select matNativeControl required formControlName="lang">
@@ -62,6 +62,10 @@
 
           <button fxFlex="2em" mat-icon-button (click)="add()" [disabled]="replaceForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
           <button fxFlex="2em" mat-icon-button (click)="clearForm()" [disabled]="replaceForm.pristine"><mat-icon>clear</mat-icon></button>
+
+          <div fxFlex="100%" *ngIf="replaceForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
+            Replacement already exists
+          </div>
       </div>
         </form>
     </mat-expansion-panel>

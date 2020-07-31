@@ -12,6 +12,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   min-width: 350px;*/
 }
 
+.error {
+  font-size: 75%;
+  color: #f44336;
+}
+
 .mat-expansion-panel-body {
   padding: 0 !important;
 }

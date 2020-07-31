@@ -74,5 +74,6 @@ export class CriteriaComponent implements OnInit {
 
   copy(index: number) {
     this.criteriaForm.setValue(this.criteria[index]);
+    this.criteriaForm.markAsDirty();
   }
 }
