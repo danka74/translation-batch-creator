@@ -37,6 +37,14 @@ export interface DescriptionItem {
   fsn: string;
 }
 
+export interface ResultMetadata {
+  items: number;
+  total: number;
+  limit: number;
+  part: number;
+  searchAfter: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -45,10 +53,31 @@ export class SnomedService {
   readonly host = '/';
   readonly branch = 'MAIN/SNOMEDCT-SE';
 
+  resultMetadata: ResultMetadata = {
+    items: 0,
+    total: 0,
+    limit: 0,
+    part: 0,
+    searchAfter: '',
+  };
+
   constructor(private http: HttpClient) { }
 
-  findDescriptions(param: Param): Observable<any> {
-    console.log(param);
+  endOfResults() {
+    return this.resultMetadata.searchAfter === '';
+  }
+
+  getResultMetadata() {
+    return this.resultMetadata;
+  }
+
+  findDescriptions(param: Param, doSearchAfter: boolean = false): Observable<DescriptionItem> {
+
+    if (doSearchAfter && !this.resultMetadata.searchAfter.length) {
+      throw(new Error('No previous search executed'));
+    }
+
+    // console.log(param);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -56,10 +85,26 @@ export class SnomedService {
       })
     };
 
-    return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&offset=0&limit=100' +
+    return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&limit=100' +
       '&term=' + encodeURI(param.term) +
-      '&ecl=' + encodeURI(param.ecl),
+      '&ecl=' + encodeURI(param.ecl) +
+      (doSearchAfter ? '&searchAfter=' + this.resultMetadata.searchAfter : ''),
       httpOptions).pipe(
+        tap((data: any) => {
+          this.resultMetadata.items = data.items.length;
+          this.resultMetadata.total = data.total;
+          this.resultMetadata.limit = data.limit;
+          // console.log(data.searchAfter);
+          // console.log(data.items.length);
+          // console.log(data.limit);
+          if (data.items.length < data.limit) {
+            this.resultMetadata.searchAfter = '';
+          } else {
+            this.resultMetadata.searchAfter = data.searchAfter;
+          }
+          this.resultMetadata.part++;
+          // console.log(this.searchAfter);
+        }),
         switchMap((data: any) => from(data.items)),
         mergeMap((concept: any) => {
           return this.http.get(
@@ -81,9 +126,11 @@ export class SnomedService {
             // console.log(item.descriptions);
             // console.log(item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)));
             // console.log(item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)) !== undefined);
-            const descFound = item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)) !== undefined;
-
-            return descFound === c.present;
+            const descFound: boolean = item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)) !== undefined;
+            // console.log(descFound);
+            // console.log(c.present);
+            // console.log(descFound ? c.present : !c.present);
+            return descFound ? c.present : !c.present;
           });
         }),
       );
