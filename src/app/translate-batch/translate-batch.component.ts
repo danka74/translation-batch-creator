@@ -192,6 +192,7 @@ export class TranslateBatchComponent implements OnInit {
         this.criteria.table.renderRows();
         this.replace.replace = batch.replace;
         this.replace.table.renderRows();
+        inputNode.value = '';
       };
 
       reader.readAsArrayBuffer(inputNode.files[0]);
