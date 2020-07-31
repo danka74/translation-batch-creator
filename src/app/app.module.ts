@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CriteriaComponent } from './criteria/criteria.component';
 import { BatchSettingsComponent } from './batch-settings/batch-settings.component';
@@ -46,6 +47,7 @@ import { ReplaceComponent } from './replace/replace.component';
     MatCardModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   providers: [SnomedService],
   bootstrap: [AppComponent]

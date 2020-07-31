@@ -1,11 +1,27 @@
 <mat-card class="batch">
-  <mat-card-title>Batch Settings</mat-card-title>
+  <mat-card-title (click)="expansionPanel.toggle()">Batch Settings</mat-card-title>
   <mat-card-content>
+    <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
+    <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
     <form [formGroup]="batchSettingsForm">
       <div fxLayout="column" fxFlexFill>
         <mat-form-field fxFlex>
           <mat-label>Name</mat-label>
           <input matInput type="text" formControlName="name">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label>Type</mat-label>
+          <select matNativeControl required formControlName="type">
+            <option value="newDescSyn">New Descriptions, Acceptable Synonyms</option>
+            <option value="replaceDesc">Replace Descriptions, Keep Acceptability</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label>Type</mat-label>
+          <select matNativeControl required formControlName="inactivationReason">
+            <option>Non-conformance to editorial policy</option>
+            <option>Erroneous</option>
+          </select>
         </mat-form-field>
         <mat-form-field fxFlex>
           <mat-label>Term</mat-label>
@@ -17,6 +33,7 @@
         </mat-form-field>
       </div>
     </form>
+  </mat-expansion-panel>
   </mat-card-content>
 </mat-card>
 
