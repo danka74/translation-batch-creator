@@ -11,3 +11,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   /*max-width: 1000px;
   min-width: 350px;*/
 }
+
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
