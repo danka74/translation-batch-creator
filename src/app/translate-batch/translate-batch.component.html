@@ -6,7 +6,7 @@
 
 <br/>
 <div class="batch" fxLayout="row" fxLayoutGap="2%" fxLayoutAlign="center center">
-<button fxFlex mat-raised-button	color="primary" (click)="run()" id="run-button">Run</button>
+<button fxFlex mat-raised-button	color="primary" (click)="run()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Run</button>
 <button fxFlex mat-raised-button color="primary" (click)="run(true)" [disabled]="endOfResults">Run Next</button>
 <button fxFlex mat-raised-button	color="primary" (click)="createBatchFile()" [disabled]="snomed.getResultMetadata().items===0">Save Batch File(s)</button>
 <button fxFlex mat-raised-button	color="primary" (click)="saveBatch()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Save Batch Definition</button>

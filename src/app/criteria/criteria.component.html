@@ -1,5 +1,8 @@
 <mat-card class="batch">
-  <mat-card-title (click)="expansionPanel.toggle()">Criteria</mat-card-title>
+  <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+    <span (click)="expansionPanel.toggle()" fxFlex>Criteria</span>
+    <button mat-icon-button (click)="clearTable()" [disabled]="criteria.length===0"><mat-icon>delete_outline</mat-icon></button>
+  </mat-card-title>
   <mat-card-content>
     <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
       <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
@@ -38,32 +41,31 @@
         </div> -->
       </mat-table>
       <br/>
-      <button mat-raised-button (click)="clearTable()">Clear criteria</button>
-      <div fxLayout="row wrap" fxLayoutGap="5">
         <form [formGroup]="criteriaForm">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.3em">
 
-          <mat-form-field fxFlex="15">
+          <mat-form-field fxFlex="5em">
             <select matNativeControl required formControlName="present">
               <option value="true">Present</option>
               <option value="false">Not present</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="15">
+          <mat-form-field fxFlex="5em">
             <mat-label>Language</mat-label>
             <select matNativeControl required formControlName="lang">
               <option value="sv">Swedish</option>
               <option value="en">English</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="100">
+          <mat-form-field fxFlex>
             <mat-label>Regular expression</mat-label>
             <input matInput type="text" formControlName="regexp">
           </mat-form-field>
 
-          <button mat-icon-button (click)="add()"><mat-icon>add_circle_outline</mat-icon></button>
-          <button mat-icon-button (click)="clearForm()"><mat-icon>clear</mat-icon></button>
-        </form>
+          <button fxFlex="2em" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
+          <button fxFlex="2em" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
       </div>
+        </form>
     </mat-expansion-panel>
   </mat-card-content>
 </mat-card>
