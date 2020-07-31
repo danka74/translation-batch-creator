@@ -85,7 +85,7 @@ export class SnomedService {
       })
     };
 
-    return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&limit=100' +
+    return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&limit=500' +
       '&term=' + encodeURI(param.term) +
       '&ecl=' + encodeURI(param.ecl) +
       (doSearchAfter ? '&searchAfter=' + this.resultMetadata.searchAfter : ''),
