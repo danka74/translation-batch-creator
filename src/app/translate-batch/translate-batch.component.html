@@ -1,16 +1,28 @@
-<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-  <app-batch-settings></app-batch-settings>
-  <app-criteria></app-criteria>
-  <app-replace></app-replace>
+<div fxLayout="row" fxLayout.lt-lg="column" fxLayoutWrap fxLayoutAlign="start start">
+  <app-batch-settings fxFlex="30%"></app-batch-settings>
+  <app-criteria fxFlex="35%"></app-criteria>
+  <app-replace fxFlex="35%"></app-replace>
 </div>
 
 <br/>
-<button mat-button (click)="run()" id="run-button">Run</button>
-
+<div class="batch" fxLayout="row" fxLayoutGap="2%" fxLayoutAlign="center center">
+<button fxFlex mat-raised-button	color="primary" (click)="run()" id="run-button">Run</button>
+<button fxFlex mat-raised-button color="primary" (click)="run(true)" [disabled]="endOfResults">Run Next</button>
+<button fxFlex mat-raised-button	color="primary" (click)="createBatchFile()" [disabled]="snomed.getResultMetadata().items===0">Save Batch File(s)</button>
+<button fxFlex mat-raised-button	color="primary" (click)="saveBatch()">Save Batch Definition</button>
+<button fxFlex mat-raised-button	color="primary" type="button" (click)="fileInput.click()">Load Batch Definition</button>
+<input hidden (change)="onFileSelected()" #fileInput type="file" id="file">
+</div>
+<br/>
 <mat-card class="batch">
+  <mat-card-header  (click)="expansionPanel.toggle()">
   <mat-card-title>Results</mat-card-title>
+  <mat-card-subtitle>{{snomed.getResultMetadata().total}} before criteria, only {{snomed.getResultMetadata().limit}} processed at a time, {{results.length}} after criteria filtering, part {{snomed.getResultMetadata().part}}</mat-card-subtitle>
+</mat-card-header>
   <mat-card-content>
-    <mat-table [dataSource]="results">
+    <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
+      <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
+    <mat-table [dataSource]="resultsDisplay">
       <ng-container matColumnDef="conceptId">
         <mat-header-cell *matHeaderCellDef>Concept Id</mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.conceptId}} </mat-cell>
@@ -31,6 +43,17 @@
     </mat-table>
     <br/>
     <mat-spinner class="spinner" diameter="30" *ngIf="running"></mat-spinner>
+    </mat-expansion-panel>
   </mat-card-content>
 </mat-card>
 
+<!-- <mat-card class="batch">
+  <mat-card-title>Batch File</mat-card-title>
+
+  <mat-card-content>
+    <mat-form-field>
+      <textarea matInput cdkTextareaAutosize>{{batchFileContent}}</textarea>
+    </mat-form-field>
+  </mat-card-content>
+
+</mat-card> -->

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 interface Criterium {
   present: boolean;
@@ -16,19 +17,12 @@ interface Criterium {
 export class CriteriaComponent implements OnInit {
 
   @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
 
   public criteria: Criterium[] = [{
-    present: true,
-    lang: 'en',
-    regexp: 'Administration of',
-  },{
-    present: true,
-    lang: 'sv',
-    regexp: 'administrering av vaccin',
-  },{
     present: false,
     lang: 'sv',
-    regexp: 'vaccination',
+    regexp: 'och\\/eller',
   }];
 
   displayedColumns: string[] = ['present', 'lang', 'regexp', 'buttons'];

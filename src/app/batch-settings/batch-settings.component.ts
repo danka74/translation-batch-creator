@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-batch-settings',
@@ -8,10 +9,14 @@ import { Validators, FormBuilder } from '@angular/forms';
 })
 export class BatchSettingsComponent implements OnInit {
 
+  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
+
   batchSettingsForm = this.fb.group({
     name: ['test', Validators.required],
-    ecl: ['<33879002 | Administration of vaccine to produce active immunity (procedure) |'],
-    term: ['administration'],
+    type: ['newDescSyn', Validators.required],
+    inactivationReason: ['Non-conformance to editorial policy', Validators.required],
+    ecl: ['*'],
+    term: ['and or'],
   });
 
   constructor(

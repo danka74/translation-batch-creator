@@ -1,6 +1,4 @@
 .batch {
-  padding: 15px;
-  margin: 15px;
   max-width: 100%;
 }
 
@@ -11,6 +9,10 @@
 .spinner {
   margin: auto;
   width: 10px;
+}
+
+mat-form-field {
+  width: 100%;
 }
 
 .mat-column-conceptId {

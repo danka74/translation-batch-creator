@@ -1,14 +1,35 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SnomedService, DescriptionItem } from '../snomed.service';
+import { SnomedService, DescriptionItem, ResultMetadata } from '../snomed.service';
 import { CriteriaComponent } from '../criteria/criteria.component';
 import { BatchSettingsComponent } from '../batch-settings/batch-settings.component';
 import { MatTable } from '@angular/material/table';
 import { ReplaceComponent } from '../replace/replace.component';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 const langRefsetMap: Record<string, string> = {
   en: '900000000000509007',
   sv: '46011000052107',
 };
+
+interface ResultsDisplay {
+  conceptId: string;
+  descriptionsDisplay: string;
+  newDescriptionsDisplay: string;
+}
+
+interface NewDescription {
+  term: string; // the new term
+  oldTerm: string; // the term being replaced
+  lang: string; // the language
+  caseSignificance: string; // the case significance of the existing description
+  descriptionId: string; // the description id of the existing description
+  acceptability: string; // acceptability of the existing description
+}
+
+interface Result {
+  descriptionItem: DescriptionItem;
+  newDescriptions: NewDescription[];
+}
 
 @Component({
   selector: 'app-translate-batch',
@@ -20,15 +41,19 @@ export class TranslateBatchComponent implements OnInit {
   @ViewChild(BatchSettingsComponent) batchSettings: BatchSettingsComponent;
   @ViewChild(CriteriaComponent) criteria: CriteriaComponent;
   @ViewChild(ReplaceComponent) replace: ReplaceComponent;
+  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
+
 
   @ViewChild(MatTable) resultTable: MatTable<any>;
   displayedColumns = ['conceptId', 'descriptions', 'newTerms'];
 
-  results: any[] = [];
+  resultsDisplay: ResultsDisplay[] = [];
+  results: Result[] = [];
   running = false;
+  endOfResults = true;
 
   constructor(
-    private snomed: SnomedService,
+    public snomed: SnomedService,
     ) { }
 
   ngOnInit(): void {
@@ -40,17 +65,18 @@ export class TranslateBatchComponent implements OnInit {
     }, '');
   }
 
-  run(): void {
+  run(searchAfter: boolean = false): void {
     if (this.batchSettings.batchSettingsForm.valid) {
       this.running = true;
       this.results = [];
+      this.resultsDisplay = [];
       this.resultTable.renderRows();
 
       this.snomed.findDescriptions({
         ecl: this.batchSettings.batchSettingsForm.get('ecl').value,
         term: this.batchSettings.batchSettingsForm.get('term').value,
         criteria: this.criteria.criteria,
-      }).subscribe({
+      }, searchAfter).subscribe({
         next: (data: DescriptionItem) => {
           // create display HTML
           const descriptionsDisplay = data.descriptions.reduce((acc, cur) => {
@@ -58,34 +84,118 @@ export class TranslateBatchComponent implements OnInit {
             return acc + cur.term + ' (' + cur.lang + ', ' + acceptability + ')<br/>';
           }, '');
           // create new descriptions
-          const newDescriptions = [];
+          const newDescriptions: NewDescription[] = [];
           let newDescriptionsDisplay = '';
           if (Array.isArray(this.replace.replace) && this.replace.replace.length) {
             data.descriptions.forEach((d) => {
+              let newDescription = d.term;
+              let replaced = false;
               this.replace.replace.forEach((r) => {
                 if (d.lang === r.lang && d.term.includes(r.replace)) {
-                  const newTerm = d.term.replace(r.replace, r.replaceWith);
-                  newDescriptions.push({
-                    term: newTerm,
-                    lang: d.lang,
-                    caseSignificance: d.caseSignificance,
-                  });
-                  newDescriptionsDisplay += newTerm + '<br/>';
+                  newDescription = newDescription.replace(r.replace, r.replaceWith);
+                  replaced = (newDescription !== d.term);
                 }
               });
+              if (replaced) {
+                newDescriptions.push({
+                  term: newDescription,
+                  oldTerm: d.term,
+                  lang: d.lang,
+                  caseSignificance: d.caseSignificance,
+                  descriptionId: d.descriptionId,
+                  acceptability: d.acceptabilityMap[langRefsetMap[d.lang]],
+                });
+                newDescriptionsDisplay += newDescription + '<br/>';
+              }
             });
           }
           this.results.push({
+            descriptionItem: data,
+            newDescriptions,
+          });
+          this.resultsDisplay.push({
             conceptId: data.conceptId,
             descriptionsDisplay,
-            newDescriptionsDisplay
+            newDescriptionsDisplay,
           });
         },
         complete: () => {
           this.resultTable.renderRows();
+          this.endOfResults = this.snomed.endOfResults();
           this.running = false;
+          // console.log(this.results);
         },
       });
     }
   }
+
+  createBatchFile() {
+    let newDescriptionsFile = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
+    let inactivateDescriptionsFile = 'Description ID\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\n';
+    if (Array.isArray(this.results) && this.results.length) {
+      this.results.forEach((r) => {
+        r.newDescriptions.forEach((d) => {
+          console.log(this.batchSettings.batchSettingsForm.get('type').value);
+          switch (this.batchSettings.batchSettingsForm.get('type').value) {
+            case 'newDescSyn':
+              newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${d.caseSignificance}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+              break;
+            case 'replaceDesc':
+              newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${d.caseSignificance}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+              inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
+              break;
+            default:
+
+          }
+        });
+      });
+
+      this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.getResultMetadata().part}.tsv`);
+
+      if (inactivateDescriptionsFile.length) {
+        this.saveFile(inactivateDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionInactivations_part_${this.snomed.getResultMetadata().part}.tsv`);
+      }
+    }
+  }
+
+  saveFile(o: any, name: string) {
+    const a = document.createElement('a');
+    if (typeof o === 'string') {
+      a.href = URL.createObjectURL(new Blob([o], {type: 'text/plain'}));
+    } else {
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(o, null, 2)], {type : 'application/json'}));
+    }
+    a.download = name;
+    // start download
+    a.click();
+  }
+
+  saveBatch() {
+    this.saveFile({
+      settings: this.batchSettings.batchSettingsForm.value,
+      criteria: this.criteria.criteria,
+      replace: this.replace.replace,
+    }, this.batchSettings.batchSettingsForm.get('name').value + '.json');
+  }
+
+  onFileSelected() {
+    const inputNode: any = document.querySelector('#file');
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const batch = JSON.parse(new TextDecoder().decode(e.target.result));
+        console.log(batch);
+        this.batchSettings.batchSettingsForm.setValue(batch.settings);
+        this.criteria.criteria = batch.criteria;
+        this.criteria.table.renderRows();
+        this.replace.replace = batch.replace;
+        this.replace.table.renderRows();
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
+  }
+
 }

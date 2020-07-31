@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, ValidationErrors } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 interface Replace {
   lang: string;
@@ -17,6 +18,8 @@ export class ReplaceComponent implements OnInit {
 
   @ViewChild(MatTable) table: MatTable<any>;
   displayedColumns: string[] = ['lang', 'replace', 'replaceWith', 'buttons'];
+  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
+
 
   public replace: Replace[] = [
     {
