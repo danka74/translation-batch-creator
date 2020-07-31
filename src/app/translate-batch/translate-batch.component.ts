@@ -171,11 +171,13 @@ export class TranslateBatchComponent implements OnInit {
   }
 
   saveBatch() {
-    this.saveFile({
-      settings: this.batchSettings.batchSettingsForm.value,
-      criteria: this.criteria.criteria,
-      replace: this.replace.replace,
-    }, this.batchSettings.batchSettingsForm.get('name').value + '.json');
+    if (this.batchSettings.batchSettingsForm.valid) {
+      this.saveFile({
+        settings: this.batchSettings.batchSettingsForm.value,
+        criteria: this.criteria.criteria,
+        replace: this.replace.replace,
+      }, this.batchSettings.batchSettingsForm.get('name').value + '.json');
+    }
   }
 
   onFileSelected() {
