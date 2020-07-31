@@ -52,6 +52,11 @@ export class CriteriaComponent implements OnInit {
     this.criteriaForm.markAsUntouched();
   }
 
+  clearTable() {
+    this.criteria = [];
+    this.table.renderRows();
+  }
+
   add() {
     if (this.criteriaForm.valid) {
       const v = this.criteriaForm.value;

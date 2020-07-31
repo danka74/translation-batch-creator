@@ -52,6 +52,11 @@ export class ReplaceComponent implements OnInit {
     this.replaceForm.markAsUntouched();
   }
 
+  clearTable() {
+    this.replace = [];
+    this.table.renderRows();
+  }
+
   add() {
     if (this.replaceForm.valid) {
       const v = this.replaceForm.value;
