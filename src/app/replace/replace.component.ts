@@ -21,13 +21,7 @@ export class ReplaceComponent implements OnInit {
   @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
 
 
-  public replace: Replace[] = [
-    {
-      lang: 'sv',
-      replace: 'administrering av vaccin',
-      replaceWith: 'vaccination',
-    }
-  ];
+  public replace: Replace[] = [];
 
   replaceForm = this.fb.group({
     lang: ['', Validators.required],

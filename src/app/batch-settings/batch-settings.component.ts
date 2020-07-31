@@ -12,11 +12,11 @@ export class BatchSettingsComponent implements OnInit {
   @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
 
   batchSettingsForm = this.fb.group({
-    name: ['test', Validators.required],
+    name: ['', Validators.required],
     type: ['newDescSyn', Validators.required],
     inactivationReason: ['Non-conformance to editorial policy', Validators.required],
     ecl: ['*'],
-    term: ['and or'],
+    term: [''],
   });
 
   constructor(

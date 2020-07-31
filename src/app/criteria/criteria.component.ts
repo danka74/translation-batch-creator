@@ -19,11 +19,7 @@ export class CriteriaComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
 
-  public criteria: Criterium[] = [{
-    present: false,
-    lang: 'sv',
-    regexp: 'och\\/eller',
-  }];
+  public criteria: Criterium[] = [];
 
   displayedColumns: string[] = ['present', 'lang', 'regexp', 'buttons'];
 
