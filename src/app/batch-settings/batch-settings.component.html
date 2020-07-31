@@ -4,8 +4,8 @@
     <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
     <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
     <form [formGroup]="batchSettingsForm">
-      <div fxLayout="column" fxFlexFill>
-        <mat-form-field fxFlex>
+      <div fxLayout="row wrap" fxFlexFill fxLayoutGap="0.3em">
+        <mat-form-field fxFlex="100%">
           <mat-label>Name</mat-label>
           <input matInput type="text" formControlName="name">
         </mat-form-field>
@@ -17,17 +17,17 @@
           </select>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <mat-label>Type</mat-label>
+          <mat-label>Inactivation reason</mat-label>
           <select matNativeControl required formControlName="inactivationReason">
             <option>Non-conformance to editorial policy</option>
             <option>Erroneous</option>
           </select>
         </mat-form-field>
-        <mat-form-field fxFlex>
+        <mat-form-field fxFlex="100%">
           <mat-label>Term Filter</mat-label>
           <input matInput type="text" formControlName="term">
         </mat-form-field>
-        <mat-form-field fxFlex>
+        <mat-form-field fxFlex="100%">
           <mat-label>Expression</mat-label>
           <textarea matInput type="text" formControlName="ecl"></textarea>
         </mat-form-field>
