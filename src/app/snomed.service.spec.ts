@@ -27,12 +27,25 @@ describe('SnomedService', () => {
 
   it('should give expected results', () => {
     expect(service.findDescriptions({
-      name: 'asthma',
-      ecl: '<<195967001',
-      enTerm: 'asthma',
-      enExp: 'asthma',
-      svExp: 'astma',
-      svExps: [],
+      criteria: [
+        {
+          present: true,
+          lang: 'en',
+          regexp: 'Administration of'
+        },
+        {
+          present: true,
+          lang: 'sv',
+          regexp: 'administrering av vaccin'
+        },
+        {
+          present: false,
+          lang: 'sv',
+          regexp: 'vaccination'
+        }
+      ],
+      term: 'administration',
+      ecl: '<33879002 | Administration of vaccine to produce active immunity (procedure) |'
     })).toBeDefined();
   });
 });

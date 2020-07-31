@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TranslateBatchComponent } from './translate-batch.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { SnomedService } from '../snomed.service';
 
 describe('TranslateBatchComponent', () => {
   let component: TranslateBatchComponent;
@@ -10,9 +12,10 @@ describe('TranslateBatchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule, FormsModule,
+        ReactiveFormsModule, FormsModule, HttpClientModule
       ],
-      declarations: [ TranslateBatchComponent ]
+      declarations: [ TranslateBatchComponent ],
+      providers: [ SnomedService, HttpClient ],
     })
     .compileComponents();
   }));

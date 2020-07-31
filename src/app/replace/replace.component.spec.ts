@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 
 import { ReplaceComponent } from './replace.component';
 
@@ -8,7 +9,10 @@ describe('ReplaceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReplaceComponent ]
+      declarations: [ ReplaceComponent ],
+      providers: [
+        FormBuilder
+      ]
     })
     .compileComponents();
   }));
