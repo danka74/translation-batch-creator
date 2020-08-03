@@ -49,6 +49,7 @@ export class CriteriaComponent implements OnInit {
 
   clearForm() {
     this.criteriaForm.reset({present: true, lang: '', regexp: ''});
+    this.criteriaForm.markAsPristine();
     this.criteriaForm.markAsUntouched();
   }
 

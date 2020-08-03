@@ -49,6 +49,7 @@ export class ReplaceComponent implements OnInit {
 
   clearForm() {
     this.replaceForm.reset({present: true, lang: '', regexp: ''});
+    this.replaceForm.markAsPristine();
     this.replaceForm.markAsUntouched();
   }
 

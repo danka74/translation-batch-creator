@@ -198,6 +198,7 @@ export class TranslateBatchComponent implements OnInit {
           const batch = JSON.parse(new TextDecoder().decode(e.target.result));
           console.log(batch);
           this.batchSettings.batchSettingsForm.setValue(batch.settings);
+          this.batchSettings.batchSettingsForm.markAsDirty();
           this.criteria.criteria = batch.criteria;
           this.criteria.table.renderRows();
           this.replace.replace = batch.replace;

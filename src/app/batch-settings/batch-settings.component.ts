@@ -23,7 +23,20 @@ export class BatchSettingsComponent implements OnInit {
     private fb: FormBuilder,
     ) { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-}
+    clear() {
+      this.batchSettingsForm.setValue({
+        name: '',
+        type: 'newDescSyn',
+        inactivationReason: 'Non-conformance to editorial policy',
+        ecl: '*',
+        term: '',
+      });
+      this.batchSettingsForm.markAsPristine();
+      this.batchSettingsForm.markAsUntouched();
+
+    }
+
+  }
