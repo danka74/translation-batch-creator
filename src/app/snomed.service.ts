@@ -37,12 +37,12 @@ export interface DescriptionItem {
   fsn: string;
 }
 
-export interface ResultMetadata {
-  items: number;
-  total: number;
-  limit: number;
-  part: number;
-  searchAfter: string;
+export class ResultMetadata {
+  items: number = 0;
+  total: number = 0;
+  limit: number = 0;
+  part: number = 0;
+  searchAfter: string = '';
 }
 
 @Injectable({
@@ -53,13 +53,7 @@ export class SnomedService {
   readonly host = '/';
   readonly branch = 'MAIN/SNOMEDCT-SE';
 
-  resultMetadata: ResultMetadata = {
-    items: 0,
-    total: 0,
-    limit: 0,
-    part: 0,
-    searchAfter: '',
-  };
+  resultMetadata: ResultMetadata = new ResultMetadata();
 
   constructor(private http: HttpClient) { }
 
@@ -77,6 +71,10 @@ export class SnomedService {
       throw(new Error('No previous search executed'));
     }
 
+    if (!doSearchAfter) {
+      this.resultMetadata = new ResultMetadata();
+    }
+
     // console.log(param);
     const httpOptions = {
       headers: new HttpHeaders({
@@ -91,6 +89,7 @@ export class SnomedService {
       (doSearchAfter ? '&searchAfter=' + this.resultMetadata.searchAfter : ''),
       httpOptions).pipe(
         tap((data: any) => {
+          console.log(data);
           this.resultMetadata.items = data.items.length;
           this.resultMetadata.total = data.total;
           this.resultMetadata.limit = data.limit;
