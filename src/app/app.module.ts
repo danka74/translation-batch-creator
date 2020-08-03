@@ -19,6 +19,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CriteriaComponent } from './criteria/criteria.component';
 import { BatchSettingsComponent } from './batch-settings/batch-settings.component';
@@ -49,7 +51,8 @@ import { ReplaceComponent } from './replace/replace.component';
     MatTableModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatToolbarModule,
   ],
   providers: [SnomedService],
   bootstrap: [AppComponent]
