@@ -11,6 +11,10 @@ mat-form-field {
   width: 100%;
 }
 
+.mat-column-select {
+  overflow: initial;
+}
+
 .mat-column-conceptId {
   word-wrap: break-word !important;
   white-space: unset !important;
