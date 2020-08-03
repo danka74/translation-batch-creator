@@ -53,8 +53,8 @@
             <input matInput type="text" formControlName="replaceWith">
           </mat-form-field>
 
-          <button fxFlex="2em" mat-icon-button (click)="add()" [disabled]="replaceForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
-          <button fxFlex="2em" mat-icon-button (click)="clearForm()" [disabled]="replaceForm.pristine"><mat-icon>clear</mat-icon></button>
+          <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="replaceForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
+          <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="replaceForm.pristine"><mat-icon>clear</mat-icon></button>
 
           <div fxFlex="100%" *ngIf="replaceForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
             Replacement already exists

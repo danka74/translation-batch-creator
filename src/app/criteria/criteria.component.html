@@ -56,8 +56,8 @@
             <mat-error>Regular expression required</mat-error>
           </mat-form-field>
 
-          <button fxFlex="2em" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
-          <button fxFlex="2em" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
+          <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
+          <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
           <div *ngIf="criteriaForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
             Criteria already exists
           </div>
