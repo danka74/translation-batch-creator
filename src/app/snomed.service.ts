@@ -94,16 +94,12 @@ export class SnomedService {
           this.resultMetadata.items = data.items.length;
           this.resultMetadata.total = data.total;
           this.resultMetadata.limit = data.limit;
-          // console.log(data.searchAfter);
-          // console.log(data.items.length);
-          // console.log(data.limit);
           if (data.items.length < data.limit) {
             this.resultMetadata.searchAfter = '';
           } else {
             this.resultMetadata.searchAfter = data.searchAfter;
           }
           this.resultMetadata.part++;
-          // console.log(this.searchAfter);
         }),
         switchMap((data: any) => from(data.items)),
         mergeMap((concept: any) => {
@@ -121,15 +117,7 @@ export class SnomedService {
           // all criteria must be fulfilled
           return param.criteria.every(c => {
             const r = RegExp(c.regexp);
-            // console.log('-----------------------------');
-            // console.log(c.present + ' ' + c.regexp + ' ' + c.lang);
-            // console.log(item.descriptions);
-            // console.log(item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)));
-            // console.log(item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)) !== undefined);
             const descFound: boolean = item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)) !== undefined;
-            // console.log(descFound);
-            // console.log(c.present);
-            // console.log(descFound ? c.present : !c.present);
             return descFound ? c.present : !c.present;
           });
         }),

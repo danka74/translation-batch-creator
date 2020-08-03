@@ -33,13 +33,6 @@
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        <!-- <div *ngFor="let c of criteria; index as i;" fxLayout="row">
-          <div fxFlex="15">{{c.present ? 'Present' : 'Not present'}}</div>
-          <div fxFlex="15">{{c.lang === 'sv' ? 'Swedish' : 'English'}}</div>
-          <div fxFlex="100">{{c.regexp}}</div>
-          <button mat-icon-button (click)="remove(i)" fxFlex="10"><mat-icon>clear</mat-icon></button>
-          <button mat-icon-button (click)="copy(i)" fxFlex="10"><mat-icon>content_copy</mat-icon></button>
-        </div> -->
       </mat-table>
       <br/>
         <form [formGroup]="replaceForm">

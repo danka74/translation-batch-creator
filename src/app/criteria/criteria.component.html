@@ -15,7 +15,7 @@
         <ng-container matColumnDef="lang">
           <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.lang === 'sv' ? 'Swedish' : 'English'}} </mat-cell>
-        </ng-container>console.log(typeof v.present);
+        </ng-container>
 
         <ng-container matColumnDef="regexp">
           <mat-header-cell *matHeaderCellDef>Regular expression</mat-header-cell>
@@ -39,8 +39,8 @@
 
           <mat-form-field fxFlex="5em">
             <select matNativeControl required formControlName="present">
-              <option value="true">Present</option>
-              <option value="false">Not present</option>
+              <option [ngValue]="true">Present</option>
+              <option [ngValue]="false">Not present</option>
             </select>
           </mat-form-field>
           <mat-form-field fxFlex="5em">
