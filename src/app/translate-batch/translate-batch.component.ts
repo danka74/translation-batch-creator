@@ -90,7 +90,7 @@ export class TranslateBatchComponent implements OnInit {
             const descriptionsDisplay = data.descriptions.reduce((acc, cur) => {
               const acceptability = cur.acceptabilityMap[langRefsetMap[cur.lang]];
               const type = cur.type;
-              return acc + cur.term + `(${cur.lang}, ${cur.type}, ${acceptability})<br/>`;
+              return acc + cur.term + ` (${cur.lang}, ${cur.type}, ${acceptability})<br/>`;
             }, '');
             // create new descriptions
             const newDescriptions: NewDescription[] = [];
