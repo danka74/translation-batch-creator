@@ -39,7 +39,7 @@
       </ng-container>
       <ng-container matColumnDef="conceptId">
         <mat-header-cell *matHeaderCellDef>Concept Id</mat-header-cell>
-        <mat-cell *matCellDef="let element"><a href="http://snomed.info/id/{{element.conceptId}}" target="_blank">{{element.conceptId}}</a></mat-cell>
+        <mat-cell *matCellDef="let element"><a href="https://dailybuild.ihtsdotools.org/?perspective=full&edition=MAIN/SNOMEDCT-SE&release=&languages=sv,en&conceptId1={{element.conceptId}}" target="_blank">{{element.conceptId}}</a></mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="descriptions">
