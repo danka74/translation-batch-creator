@@ -9,7 +9,7 @@
       <mat-table [dataSource]="criteria">
         <ng-container matColumnDef="present">
           <mat-header-cell *matHeaderCellDef>Present</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.present === true ? 'Present' : 'Not present'}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.present === true ? 'Present' : 'Not Present'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="lang">
@@ -19,14 +19,14 @@
 
         <ng-container matColumnDef="regexp">
           <mat-header-cell *matHeaderCellDef>Regular expression</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.regexp}} </mat-cell>
+          <mat-cell *matCellDef="let element" style="word-wrap: word-break;"> {{element.regexp}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="buttons">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell *matCellDef="let element; let i = index" style="display:flex !important; justify-content:flex-end!important;">
-            <button mat-icon-button (click)="remove(i)"><mat-icon>clear</mat-icon></button>
+          <mat-cell *matCellDef="let element; let i = index">
             <button mat-icon-button (click)="copy(i)"><mat-icon>content_copy</mat-icon></button>
+            <button mat-icon-button (click)="remove(i)"><mat-icon>clear</mat-icon></button>
           </mat-cell>
         </ng-container>
 
@@ -34,16 +34,16 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
       <br/>
-        <form [formGroup]="criteriaForm">
-      <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
+      <form [formGroup]="criteriaForm">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
 
-          <mat-form-field fxFlex="5em">
+          <mat-form-field fxFlex="5rem">
             <select matNativeControl required formControlName="present">
               <option [ngValue]="true">Present</option>
               <option [ngValue]="false">Not present</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="5em">
+          <mat-form-field fxFlex="5rem">
             <mat-label>Language</mat-label>
             <select matNativeControl required formControlName="lang">
               <option value="sv">Swedish</option>
@@ -55,14 +55,15 @@
             <input matInput type="text" formControlName="regexp">
             <mat-error>Regular expression required</mat-error>
           </mat-form-field>
-
-          <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
-          <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
+          <div fxFlex="5rem">
+            <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
+            <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
+          </div>
           <div *ngIf="criteriaForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
             Criteria already exists
           </div>
-      </div>
-        </form>
+        </div>
+      </form>
     </mat-expansion-panel>
   </mat-card-content>
 </mat-card>
