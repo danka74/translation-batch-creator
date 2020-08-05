@@ -50,19 +50,31 @@ export class ResultMetadata {
 })
 export class SnomedService {
 
-  readonly host = '/';
-  readonly branch = 'MAIN/SNOMEDCT-SE';
+  readonly host = '/snowstorm/';
+  private _branch = 'MAIN/SNOMEDCT-SE';
 
-  resultMetadata: ResultMetadata = new ResultMetadata();
+  private _resultMetadata: ResultMetadata = new ResultMetadata();
 
   constructor(private http: HttpClient) { }
 
   endOfResults() {
-    return this.resultMetadata.searchAfter === '';
+    return this._resultMetadata.searchAfter === '';
   }
 
-  getResultMetadata() {
-    return this.resultMetadata;
+  get resultMetadata() {
+    return this._resultMetadata;
+  }
+
+  getBranches() {
+    return this.http.get(this.host + 'branches');
+  }
+
+  get branch() {
+    return this._branch;
+  };
+
+  set branch(b: string) {
+    this._branch = b;
   }
 
   findDescriptions(param: Param, doSearchAfter: boolean = false): Observable<DescriptionItem> {
@@ -72,7 +84,7 @@ export class SnomedService {
     }
 
     if (!doSearchAfter) {
-      this.resultMetadata = new ResultMetadata();
+      this._resultMetadata = new ResultMetadata();
     }
 
     // console.log(param);

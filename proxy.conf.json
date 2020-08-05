@@ -1,7 +1,10 @@
 {
-  "/MAIN/*": {
+  "/snowstorm/*": {
     "target": "http://localhost:8080",
     "secure": false,
+    "pathRewrite": {
+      "^/snowstorm/": "/"
+    },
     "logLevel": "debug",
     "changeOrigin": true
   }
