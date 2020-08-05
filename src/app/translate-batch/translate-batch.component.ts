@@ -190,8 +190,9 @@ export class TranslateBatchComponent implements OnInit {
     }
 
     loadBatchDef() {
-      document.getElementById('findInput').click();
+      document.getElementById('file').click();
     }
+
     onFileSelected() {
       const inputNode: any = document.querySelector('#file');
 

@@ -11,7 +11,7 @@
 <button fxFlex mat-raised-button	color="primary" (click)="createBatchFile()" [disabled]="snomed.resultMetadata.items===0">Save Batch File(s)</button>
 <button fxFlex mat-raised-button	color="primary" (click)="saveBatchDef()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Save Batch Definition</button>
 <button fxFlex mat-raised-button	color="primary" type="button" (click)="loadBatchDef()">Load Batch Definition</button>
-<input hidden (change)="onFileSelected()" #fileInput type="file" id="file">
+<input hidden (change)="onFileSelected()" type="file" id="file">
 </div>
 <br/>
 <mat-card class="batch">
