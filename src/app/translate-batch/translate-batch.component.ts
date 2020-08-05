@@ -6,6 +6,7 @@ import { MatTable } from '@angular/material/table';
 import { ReplaceComponent } from '../replace/replace.component';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatInput } from '@angular/material/input';
 
 const langRefsetMap: Record<string, string> = {
   en: '900000000000509007',
@@ -49,7 +50,6 @@ export class TranslateBatchComponent implements OnInit {
   @ViewChild(CriteriaComponent) criteria: CriteriaComponent;
   @ViewChild(ReplaceComponent) replace: ReplaceComponent;
   @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
-
 
   @ViewChild(MatTable) resultTable: MatTable<ResultsDisplay>;
   displayedColumns = ['select', 'conceptId', 'descriptions', 'newTerms'];
@@ -159,10 +159,10 @@ export class TranslateBatchComponent implements OnInit {
           }
         });
 
-        this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.getResultMetadata().part}.tsv`);
+        this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.resultMetadata.part}.tsv`);
 
         if (inactivateDescriptionsFile.length) {
-          this.saveFile(inactivateDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionInactivations_part_${this.snomed.getResultMetadata().part}.tsv`);
+          this.saveFile(inactivateDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionInactivations_part_${this.snomed.resultMetadata.part}.tsv`);
         }
       }
     }
@@ -179,7 +179,7 @@ export class TranslateBatchComponent implements OnInit {
       a.click();
     }
 
-    saveBatch() {
+    saveBatchDef() {
       if (this.batchSettings.batchSettingsForm.valid) {
         this.saveFile({
           settings: this.batchSettings.batchSettingsForm.value,
@@ -189,6 +189,9 @@ export class TranslateBatchComponent implements OnInit {
       }
     }
 
+    loadBatchDef() {
+      document.getElementById('findInput').click();
+    }
     onFileSelected() {
       const inputNode: any = document.querySelector('#file');
 

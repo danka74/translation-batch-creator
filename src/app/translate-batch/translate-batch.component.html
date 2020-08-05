@@ -8,16 +8,16 @@
 <div class="batch" fxLayout="row" fxLayoutGap="2%" fxLayoutAlign="center center">
 <button fxFlex mat-raised-button	color="primary" (click)="run()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Run</button>
 <button fxFlex mat-raised-button color="primary" (click)="run(true)" [disabled]="endOfResults">Run Next</button>
-<button fxFlex mat-raised-button	color="primary" (click)="createBatchFile()" [disabled]="snomed.getResultMetadata().items===0">Save Batch File(s)</button>
-<button fxFlex mat-raised-button	color="primary" (click)="saveBatch()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Save Batch Definition</button>
-<button fxFlex mat-raised-button	color="primary" type="button" (click)="fileInput.click()">Load Batch Definition</button>
+<button fxFlex mat-raised-button	color="primary" (click)="createBatchFile()" [disabled]="snomed.resultMetadata.items===0">Save Batch File(s)</button>
+<button fxFlex mat-raised-button	color="primary" (click)="saveBatchDef()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Save Batch Definition</button>
+<button fxFlex mat-raised-button	color="primary" type="button" (click)="loadBatchDef()">Load Batch Definition</button>
 <input hidden (change)="onFileSelected()" #fileInput type="file" id="file">
 </div>
 <br/>
 <mat-card class="batch">
   <mat-card-header  (click)="expansionPanel.toggle()">
   <mat-card-title>Results</mat-card-title>
-  <mat-card-subtitle>{{snomed.getResultMetadata().total}} before criteria, only {{snomed.getResultMetadata().limit}} processed at a time, {{results.length}} after criteria filtering, part {{snomed.getResultMetadata().part}}</mat-card-subtitle>
+  <mat-card-subtitle>{{snomed.resultMetadata.total}} before criteria, only {{snomed.resultMetadata.limit}} processed at a time, {{results.length}} after criteria filtering, part {{snomed.resultMetadata.part}}</mat-card-subtitle>
 </mat-card-header>
   <mat-card-content>
     <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">

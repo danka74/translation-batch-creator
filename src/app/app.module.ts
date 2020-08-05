@@ -20,6 +20,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CriteriaComponent } from './criteria/criteria.component';
@@ -53,6 +56,9 @@ import { ReplaceComponent } from './replace/replace.component';
     MatExpansionModule,
     MatCheckboxModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatListModule,
   ],
   providers: [SnomedService],
   bootstrap: [AppComponent]
