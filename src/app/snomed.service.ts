@@ -9,6 +9,8 @@ export interface Param {
   criteria: {
     present: boolean;
     lang: string;
+    type: string;
+    accept: string;
     regexp: string;
   }[];
 }
@@ -44,6 +46,11 @@ export class ResultMetadata {
   part: number = 0;
   searchAfter: string = '';
 }
+
+const langRefsetMap: Record<string, string> = {
+  en: '900000000000509007',
+  sv: '46011000052107',
+};
 
 @Injectable({
   providedIn: 'root'
@@ -128,7 +135,12 @@ export class SnomedService {
           // all criteria must be fulfilled
           return param.criteria.every(c => {
             const r = RegExp(c.regexp);
-            const descFound: boolean = item.descriptions.find((d) => d.lang === c.lang && r.test(d.term)) !== undefined;
+            const descFound: boolean = item.descriptions.find((d) => {
+              return d.lang === c.lang &&
+                (c.type !== '' ? c.type === d.type : true) &&
+                (c.accept !== '' ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
+                r.test(d.term);
+            }) !== undefined;
             return descFound ? c.present : !c.present;
           });
         }),

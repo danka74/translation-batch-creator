@@ -31,7 +31,7 @@ interface NewDescription {
   lang: string; // the language
   caseSignificance: string; // the case significance of the existing description
   descriptionId: string; // the description id of the existing description
-  acceptability: string; // caseSignificanceMapacceptability of the existing description
+  acceptability: string; // acceptability of the existing description
 }
 
 interface Result {

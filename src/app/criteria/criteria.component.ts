@@ -6,6 +6,8 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 interface Criterium {
   present: boolean;
   lang: string;
+  type: string;
+  accept: string;
   regexp: string;
 }
 
@@ -21,11 +23,13 @@ export class CriteriaComponent implements OnInit {
 
   public criteria: Criterium[] = [];
 
-  displayedColumns: string[] = ['present', 'lang', 'regexp', 'buttons'];
+  displayedColumns: string[] = ['present', 'lang', 'type', 'accept', 'regexp', 'buttons'];
 
   criteriaForm = this.fb.group({
     present: [true, Validators.required],
     lang: ['', Validators.required],
+    type: [''],
+    accept: [''],
     regexp: ['', Validators.required],
   }, {validators: this.duplicateValidator.bind(this)});
 
@@ -33,6 +37,8 @@ export class CriteriaComponent implements OnInit {
     const duplicate = this.criteria.find((c: Criterium) => {
       return c.present === control.get('present').value &&
         c.lang === control.get('lang').value &&
+        c.type === control.get('type').value &&
+        c.accept === control.get('accept').value &&
         c.regexp === control.get('regexp').value;
     });
     return duplicate ?

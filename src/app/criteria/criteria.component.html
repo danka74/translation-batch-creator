@@ -17,6 +17,16 @@
           <mat-cell *matCellDef="let element"> {{element.lang === 'sv' ? 'Swedish' : 'English'}} </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.type === 'FSN' ? 'FSN' : element.type === 'SYNONYM' ? 'SYN' : '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="accept">
+          <mat-header-cell *matHeaderCellDef>Accept.</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.accept === 'PREFERRED' ? 'PT' : element.accept === 'ACCEPTABLE' ? 'ACCEPT' : '-'}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="regexp">
           <mat-header-cell *matHeaderCellDef>Regular expression</mat-header-cell>
           <mat-cell *matCellDef="let element" style="word-wrap: word-break;"> {{element.regexp}} </mat-cell>
@@ -48,6 +58,22 @@
             <select matNativeControl required formControlName="lang">
               <option value="sv">Swedish</option>
               <option value="en">English</option>
+            </select>
+          </mat-form-field>
+          <mat-form-field fxFlex="3rem">
+            <mat-label>Type</mat-label>
+            <select matNativeControl formControlName="type">
+              <option value="">-</option>
+              <option value="FSN">FSN</option>
+              <option value="SYNONYM">SYN</option>
+            </select>
+          </mat-form-field>
+          <mat-form-field fxFlex="3rem">
+            <mat-label>Accept.</mat-label>
+            <select matNativeControl formControlName="accept">
+              <option value="">-</option>
+              <option value="PREFERRED">PT</option>
+              <option value="ACCEPTABLE">ACCEPT</option>
             </select>
           </mat-form-field>
           <mat-form-field fxFlex>
