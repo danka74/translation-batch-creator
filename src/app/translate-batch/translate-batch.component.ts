@@ -145,14 +145,16 @@ export class TranslateBatchComponent implements OnInit {
         this.results.forEach((r: Result, index: number) => {
           if (this.selection.isSelected(this.resultsDisplay[index])) {
             r.newDescriptions.forEach((d) => {
+              console.log(this.batchSettings.batchSettingsForm.get('type').value);
               switch (this.batchSettings.batchSettingsForm.get('type').value) {
                 case 'newDescSyn':
-                newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
-                break;
+                  console.log(r.descriptionItem.fsn);
+                  newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+                  break;
                 case 'replaceDesc':
-                newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
-                inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
-                break;
+                  newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+                  inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
+                  break;
                 default:
               }
             });
@@ -161,7 +163,7 @@ export class TranslateBatchComponent implements OnInit {
 
         this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.resultMetadata.part}.tsv`);
 
-        if (inactivateDescriptionsFile.length) {
+        if (this.batchSettings.batchSettingsForm.get('type').value === 'replaceDesc') {
           this.saveFile(inactivateDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionInactivations_part_${this.snomed.resultMetadata.part}.tsv`);
         }
       }

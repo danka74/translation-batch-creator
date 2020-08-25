@@ -6,7 +6,6 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: darkgrey; }
 
 .batch {
-  padding: 5px;
   margin: 5px;
 }
 
