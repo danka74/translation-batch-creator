@@ -27,6 +27,6 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy from the stahg 1
 COPY --from=builder /app-ui/dist/* /usr/share/nginx/html
 
-EXPOSE 4200 80
+EXPOSE 3000
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
