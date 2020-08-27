@@ -135,10 +135,16 @@ export class SnomedService {
           // all criteria must be fulfilled
           return param.criteria.every(c => {
             const r = RegExp(c.regexp);
+            // console.log(c);
             const descFound: boolean = item.descriptions.find((d) => {
+              // console.log(d.term);
+              // const langEq = d.lang === c.lang;
+              // const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
+              // const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
+              // const termTest = r.test(d.term);
               return d.lang === c.lang &&
-                (c.type !== '' ? c.type === d.type : true) &&
-                (c.accept !== '' ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
+                ((c.type && c.type.length) ? c.type === d.type : true) &&
+                ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
                 r.test(d.term);
             }) !== undefined;
             return descFound ? c.present : !c.present;
