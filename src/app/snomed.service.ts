@@ -102,7 +102,7 @@ export class SnomedService {
       })
     };
 
-    // search for active concepts, active terms
+    // search for active concepts, active descriptions
     return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&termActive=true&limit=500' +
       '&term=' + encodeURI(param.term) +
       '&ecl=' + encodeURI(param.ecl) +
