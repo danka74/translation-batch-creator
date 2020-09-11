@@ -139,7 +139,7 @@ export class TranslateBatchComponent implements OnInit {
     }
 
     exportResults() {
-      const output = 'Concept ID\tExisting description(s)\tProposal(s)' +
+      const output = 'Concept ID\tExisting description(s)\tProposal(s)\n' +
         this.results.reduce((acc: string, r: Result) => {
           return acc + r.descriptionItem.conceptId + '\t' + r.descriptionItem.descriptions.reduce((acc: string, cur: Description) => {
             const acceptability = cur.acceptabilityMap[langRefsetMap[cur.lang]];
