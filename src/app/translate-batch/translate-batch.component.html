@@ -8,6 +8,7 @@
 <div class="batch" fxLayout="row" fxLayoutGap="2%" fxLayoutAlign="center center">
 <button fxFlex mat-raised-button	color="primary" (click)="run()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Run</button>
 <button fxFlex mat-raised-button color="primary" (click)="run(true)" [disabled]="endOfResults">Run Next</button>
+<button fxFlex mat-raised-button	color="primary" (click)="exportResults()" [disabled]="snomed.resultMetadata.items===0">Export results</button>
 <button fxFlex mat-raised-button	color="primary" (click)="createBatchFile()" [disabled]="snomed.resultMetadata.items===0">Save Batch File(s)</button>
 <button fxFlex mat-raised-button	color="primary" (click)="saveBatchDef()" [disabled]="batchSettings ? batchSettings.batchSettingsForm.invalid : true">Save Batch Definition</button>
 <button fxFlex mat-raised-button	color="primary" type="button" (click)="loadBatchDef()">Load Batch Definition</button>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SnomedService, DescriptionItem, ResultMetadata } from '../snomed.service';
+import { SnomedService, DescriptionItem, ResultMetadata, Description } from '../snomed.service';
 import { CriteriaComponent } from '../criteria/criteria.component';
 import { BatchSettingsComponent } from '../batch-settings/batch-settings.component';
 import { MatTable } from '@angular/material/table';
@@ -138,22 +138,46 @@ export class TranslateBatchComponent implements OnInit {
       }
     }
 
+    exportResults() {
+      const output = 'Concept ID\tExisting description(s)\tProposal(s)' +
+        this.results.reduce((acc: string, r: Result) => {
+          return acc + r.descriptionItem.conceptId + '\t' + r.descriptionItem.descriptions.reduce((acc: string, cur: Description) => {
+            const acceptability = cur.acceptabilityMap[langRefsetMap[cur.lang]];
+            const type = cur.type;
+            return acc + cur.term + ` (${cur.lang}, ${cur.type}, ${acceptability}) `;
+          }, '') + '\t' + r.newDescriptions.reduce((acc: string, cur: NewDescription) => {
+            return acc + cur.term + ` (${cur.lang}, ${cur.acceptability}) `;
+          }, '') + '\n';
+        }, '');
+      this.saveFile(output, this.batchSettings.batchSettingsForm.get('name').value + '.tsv');
+    }
+
     createBatchFile() {
       let newDescriptionsFile = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
       let inactivateDescriptionsFile = 'Description ID\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\n';
+      let changeDescriptionsFile = 'Description ID\tTerm (For reference only)\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
       if (Array.isArray(this.results) && this.results.length) {
         this.results.forEach((r: Result, index: number) => {
           if (this.selection.isSelected(this.resultsDisplay[index])) {
             r.newDescriptions.forEach((d) => {
               console.log(this.batchSettings.batchSettingsForm.get('type').value);
               switch (this.batchSettings.batchSettingsForm.get('type').value) {
+                // add new acceptable synonym
                 case 'newDescSyn':
                   console.log(r.descriptionItem.fsn);
                   newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
                   break;
+                // inactivate existing description, add new preferred synonym
                 case 'replaceDesc':
                   newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
                   inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
+                  break;
+                // change acceptibility of existing description, add new preferred synonym
+                case 'changeDesc':
+                  newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+                  if (d.acceptability === 'PREFERRED') {
+                     changeDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${d.caseSignificance}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+                  }
                   break;
                 default:
               }
@@ -165,6 +189,10 @@ export class TranslateBatchComponent implements OnInit {
 
         if (this.batchSettings.batchSettingsForm.get('type').value === 'replaceDesc') {
           this.saveFile(inactivateDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionInactivations_part_${this.snomed.resultMetadata.part}.tsv`);
+        }
+
+        if (this.batchSettings.batchSettingsForm.get('type').value === 'changeDesc') {
+          this.saveFile(changeDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionChanges_part_${this.snomed.resultMetadata.part}.tsv`);
         }
       }
     }
