@@ -12,10 +12,12 @@ import { TranslateBatchComponent } from './translate-batch/translate-batch.compo
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'translation-batch-creator';
 
-  @ViewChild(MatSelect) branchSelect: MatSelect;
-  @ViewChild(TranslateBatchComponent) translateBatch: TranslateBatchComponent;
+  @ViewChild('selectBranch') branchSelect: MatSelect;
+  @ViewChild('selectLimit') limitSelect: MatSelect;
 
   branches: Observable<any>;
+
+  allowedLimits: string[];
 
   constructor(
     private snomed: SnomedService,
@@ -23,15 +25,21 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.branches = this.snomed.getBranches();
+    this.allowedLimits = this.snomed.getAllowedLimits();
   }
 
   ngAfterViewInit(): void {
     this.branchSelect.value = this.snomed.branch;
+    this.limitSelect.value = this.snomed.limit;
   }
 
-  selectBranch(event: MatSelectChange) {
+  setBranch(event: MatSelectChange) {
     console.log(event.value);
     this.snomed.branch = event.value;
+  }
+
+  setLimit(event: MatSelectChange) {
+    this.snomed.limit = event.value;
   }
 
   doNothing() {

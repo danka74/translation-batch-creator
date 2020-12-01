@@ -4,8 +4,13 @@
   </button>
   <span fxFlex="none">Translation Batch Creator</span>
   <mat-form-field fxFlex="17em">
-    <mat-select matNativeControl (selectionChange)="selectBranch($event)" >
+    <mat-select matNativeControl (selectionChange)="setBranch($event)" #selectBranch>
       <mat-option *ngFor="let b of branches | async" [value]="b.path" >{{b.path}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field fxFlex="4em">
+    <mat-select matNativeControl (selectionChange)="setLimit($event)" #selectLimit>
+      <mat-option *ngFor="let l of allowedLimits" [value]="l" >{{l}}</mat-option>
     </mat-select>
   </mat-form-field>
   <span fxFlex="grow">&nbsp;</span>

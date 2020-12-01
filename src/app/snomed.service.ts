@@ -68,8 +68,13 @@ export class SnomedService {
 
   readonly host = '/snowstorm/';
   private _branch = 'MAIN/SNOMEDCT-SE';
+  private _limit = '500';
+
+  private allowedLimits = [ '10', '500', '1000', '2000', '5000' ];
 
   private _resultMetadata: ResultMetadata = new ResultMetadata();
+
+
 
   constructor(private http: HttpClient) { }
 
@@ -93,6 +98,18 @@ export class SnomedService {
     this._branch = b;
   }
 
+  getAllowedLimits() {
+    return this.allowedLimits;
+  }
+
+  get limit() {
+    return this._limit;
+  }
+
+  set limit(l: string) {
+    this._limit = l;
+  }
+
   findDescriptions(param: Param, doSearchAfter: boolean = false): Observable<DescriptionItem> {
 
     if (doSearchAfter && !this.resultMetadata.searchAfter.length) {
@@ -112,7 +129,7 @@ export class SnomedService {
     };
 
     // search for active concepts, active descriptions
-    return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&termActive=true&limit=500' +
+    return this.http.get(this.host + this.branch + '/concepts?activeFilter=true&termActive=true&limit=' + this.limit +
       '&term=' + encodeURI(param.term) +
       '&ecl=' + encodeURI(param.ecl) +
       (doSearchAfter ? '&searchAfter=' + this.resultMetadata.searchAfter : ''),
