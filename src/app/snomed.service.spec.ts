@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
 
 
-import { SnomedService } from './snomed.service';
+import { SnomedService, createRegExp } from './snomed.service';
 
 describe('SnomedService', () => {
   let service: SnomedService;
@@ -25,23 +25,34 @@ describe('SnomedService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('createRegExp should give expected results', () => {
+    expect(createRegExp('/hej/gi').test('HEJ'))
+    .toBeTruthy();
+  });
+
   it('should give expected results', () => {
     expect(service.findDescriptions({
       criteria: [
         {
           present: true,
           lang: 'en',
-          regexp: 'Administration of'
+          regexp: 'Administration of',
+          type: '',
+          accept: '',
         },
         {
           present: true,
           lang: 'sv',
-          regexp: 'administrering av vaccin'
+          regexp: 'administrering av vaccin',
+          type: '',
+          accept: '',
         },
         {
           present: false,
           lang: 'sv',
-          regexp: 'vaccination'
+          regexp: 'vaccination',
+          type: '',
+          accept: '',
         }
       ],
       term: 'administration',

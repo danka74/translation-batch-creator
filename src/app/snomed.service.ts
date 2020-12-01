@@ -47,9 +47,18 @@ export class ResultMetadata {
   searchAfter: string = '';
 }
 
-const langRefsetMap: Record<string, string> = {
+export const langRefsetMap: Record<string, string> = {
   en: '900000000000509007',
   sv: '46011000052107',
+};
+
+export const createRegExp = (s: string): RegExp => {
+  if (s.startsWith('/')) {
+    const pattern = s.slice(1).slice(0, s.lastIndexOf('/'));
+    const flags = s.slice(s.lastIndexOf('/') + 1);
+    return new RegExp(pattern, flags);
+  }
+  return new RegExp(s);
 };
 
 @Injectable({
@@ -123,7 +132,7 @@ export class SnomedService {
         switchMap((data: any) => from(data.items)),
         mergeMap((concept: any) => {
           return this.http.get(
-            this.host + this.branch + '/descriptions?active=true&concept=' + concept.conceptId,
+            this.host + this.branch + '/descriptions?active=true&conceptId=' + concept.conceptId,
             httpOptions).pipe(
               map((x: any) => ({
                 conceptId: concept.conceptId,
@@ -135,14 +144,14 @@ export class SnomedService {
         filter((item: DescriptionItem) => {
           // all criteria must be fulfilled
           return param.criteria.every(c => {
-            const r = RegExp(c.regexp);
+            const r = createRegExp(c.regexp);
             // console.log(c);
             const descFound: boolean = item.descriptions.find((d) => {
               // console.log(d.term);
-              // const langEq = d.lang === c.lang;
-              // const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
-              // const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
-              // const termTest = r.test(d.term);
+              const langEq = d.lang === c.lang;
+              const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
+              const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
+              const termTest = r.test(d.term);
               return d.lang === c.lang &&
                 ((c.type && c.type.length) ? c.type === d.type : true) &&
                 ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&

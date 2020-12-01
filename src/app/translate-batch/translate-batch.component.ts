@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SnomedService, DescriptionItem, ResultMetadata, Description } from '../snomed.service';
+import { SnomedService, DescriptionItem, ResultMetadata, Description, createRegExp } from '../snomed.service';
 import { CriteriaComponent } from '../criteria/criteria.component';
 import { BatchSettingsComponent } from '../batch-settings/batch-settings.component';
 import { MatTable } from '@angular/material/table';
@@ -100,8 +100,9 @@ export class TranslateBatchComponent implements OnInit {
                 let newDescription = d.term;
                 let replaced = false;
                 this.replace.replace.forEach((r) => {
-                  if (d.lang === r.lang && d.term.includes(r.replace)) {
-                    newDescription = newDescription.replace(r.replace, r.replaceWith);
+                  const re = createRegExp(r.replace);
+                  if (d.lang === r.lang && re.test(d.term)) {
+                    newDescription = newDescription.replace(re, r.replaceWith);
                     replaced = (newDescription !== d.term);
                   }
                 });
