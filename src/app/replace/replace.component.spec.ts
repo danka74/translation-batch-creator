@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
 import { ReplaceComponent } from './replace.component';
@@ -7,7 +7,7 @@ describe('ReplaceComponent', () => {
   let component: ReplaceComponent;
   let fixture: ComponentFixture<ReplaceComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ReplaceComponent ],
       providers: [

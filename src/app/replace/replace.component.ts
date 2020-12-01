@@ -26,7 +26,7 @@ export class ReplaceComponent implements OnInit {
   replaceForm = this.fb.group({
     lang: ['', Validators.required],
     replace: ['', Validators.required],
-    replaceWith: ['', Validators.required],
+    replaceWith: '',
   }, {validators: this.duplicateValidator.bind(this)});
 
   duplicateValidator(control: FormGroup): ValidationErrors | null {

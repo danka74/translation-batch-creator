@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
 import { BatchSettingsComponent } from './batch-settings.component';
@@ -7,7 +7,7 @@ describe('BatchSettingsComponent', () => {
   let component: BatchSettingsComponent;
   let fixture: ComponentFixture<BatchSettingsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BatchSettingsComponent ],
       providers: [ FormBuilder ],
