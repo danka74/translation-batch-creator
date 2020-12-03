@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SnomedService, DescriptionItem, ResultMetadata, Description, createRegExp } from '../snomed.service';
+import { SnomedService, DescriptionItem, ResultMetadata, Description, createRegExp } from '../../snomed.service';
 import { CriteriaComponent } from '../criteria/criteria.component';
 import { BatchSettingsComponent } from '../batch-settings/batch-settings.component';
 import { MatTable } from '@angular/material/table';
 import { ReplaceComponent } from '../replace/replace.component';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatInput } from '@angular/material/input';
+import { MenuService } from 'src/app/menu.service';
 
 const langRefsetMap: Record<string, string> = {
   en: '900000000000509007',
@@ -62,9 +62,11 @@ export class TranslateBatchComponent implements OnInit {
 
   constructor(
     public snomed: SnomedService,
+    private menu: MenuService,
     ) { }
 
     ngOnInit(): void {
+      this.menu.title = 'Batch';
     }
 
     displayDesc(descriptions: any[]) {

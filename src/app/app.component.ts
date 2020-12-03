@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { SnomedService } from './snomed.service';
 import { Observable } from 'rxjs';
 import { MatSelectChange, MatSelect } from '@angular/material/select';
-import { TranslateBatchComponent } from './translate-batch/translate-batch.component';
+import { MenuService } from './menu.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(
     private snomed: SnomedService,
-    ) { }
+    public menu: MenuService,
+  ) { }
 
   ngOnInit() {
     this.branches = this.snomed.getBranches();

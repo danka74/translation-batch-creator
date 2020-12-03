@@ -1,0 +1,33 @@
+.mat-card {
+  padding: 3em;
+  border-spacing: 3em;
+}
+
+.spinner {
+  margin: auto;
+  width: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-column-select {
+  overflow: initial;
+}
+
+.mat-column-conceptId {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 8% !important;
+  width: 8% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

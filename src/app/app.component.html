@@ -2,7 +2,7 @@
   <button fxFlex="none" mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span fxFlex="none">Translation Batch Creator</span>
+  <span fxFlex="none">SNOMED Tools</span>
   <mat-form-field fxFlex="17em">
     <mat-select matNativeControl (selectionChange)="setBranch($event)" #selectBranch>
       <mat-option *ngFor="let b of branches | async" [value]="b.path" >{{b.path}}</mat-option>
@@ -13,6 +13,7 @@
       <mat-option *ngFor="let l of allowedLimits" [value]="l" >{{l}}</mat-option>
     </mat-select>
   </mat-form-field>
+  <span fxFlex>{{menu.title}}</span>
   <span fxFlex="grow">&nbsp;</span>
   <button fxFlex="none" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
@@ -26,8 +27,8 @@
   <mat-sidenav #sidenav>
     <mat-nav-list>
 
-      <a mat-list-item (click)="doNothing()" href="">Nothing</a>
-      <a mat-list-item (click)="doNothing()" href="">Nothing</a>
+      <a mat-list-item href="" routerLink="/translate-batch">Batch Translation</a>
+      <a mat-list-item href="" routerLink="/icd-10">ICD-10</a>
 
     </mat-nav-list>
   </mat-sidenav>

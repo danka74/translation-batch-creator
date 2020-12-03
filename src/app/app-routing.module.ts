@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TranslateBatchComponent } from './translate-batch/translate-batch.component';
+import { TranslateBatchComponent } from './batch/translate-batch/translate-batch.component';
+import { Icd10Component } from './icd10/icd10/icd10.component';
 
 
 const routes: Routes = [
   {
     path: 'translate-batch',
     component: TranslateBatchComponent,
+  },
+  {
+    path: 'icd-10',
+    component: Icd10Component,
   },
   {
     path: '',
