@@ -56,6 +56,9 @@ export class Icd10Component implements OnInit {
 
     run() {
       const codes = this.icd10Form.get('codes').value.split(/[\s,]+/);
+      this.running = true;
+      this.results = [];
+      this.resultTable.renderRows();
       this.snomed.findIcd10(codes).subscribe({
         next: (data: Icd10Result) => {
           console.log(data);
