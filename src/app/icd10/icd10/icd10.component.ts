@@ -42,8 +42,18 @@ export class Icd10Component implements OnInit {
     }
 
     ngOnInit(): void {
-      this.menu.title = 'ICD-10';
-      this.snomed.resetMetadata();
+      this.menu.setMenuData({
+        title: 'ICD-10',
+        items: [{
+          text: 'Run',
+          action: this.run,
+        }],
+        buttons: [{
+          text: 'Run',
+          action: this.run,
+          icon: 'play_arrow',
+        }],
+      }) ;
     }
 
     clear() {
@@ -55,7 +65,24 @@ export class Icd10Component implements OnInit {
     }
 
     run() {
-      const codes = this.icd10Form.get('codes').value.split(/[\s,]+/);
+      const codes = this.icd10Form.get('codes').value
+        .match(/[A-Z]\d\d\.?\d?\w?/g)
+        .map((code: string) => code.toUpperCase())
+        .map((code: string) => {
+          if (code.match(/^[A-Z]\d\d\w\w?$/)) {
+            return code.substr(0, 3) + '.' + code.substr(3, 2);
+          }
+          return code;
+        })
+        .flatMap((code: string) => {
+          if (code.match(/^[A-Z]\d\d$/)) {
+            const children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+              .map((num) => code + '.' + num);
+            return [code, ...children];
+          }
+          return code;
+        });
+      console.log(codes);
       this.running = true;
       this.results = [];
       this.resultTable.renderRows();
