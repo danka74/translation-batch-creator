@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { SnomedService } from './snomed.service';
 import { Observable } from 'rxjs';
 import { MatSelectChange, MatSelect } from '@angular/material/select';
-import { MenuService } from './menu.service';
+import { Menu, MenuService } from './menu.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +19,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   allowedLimits: string[];
 
+  menuData: Menu;
+
   constructor(
     private snomed: SnomedService,
     public menu: MenuService,
@@ -27,6 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.branches = this.snomed.getBranches();
     this.allowedLimits = this.snomed.getAllowedLimits();
+    this.menu.getMenuData().subscribe(menuData => this.menuData = menuData);
   }
 
   ngAfterViewInit(): void {
@@ -45,5 +48,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   doNothing() {
 
+  }
+
+  handleMenuAction(action: Function) {
+    action();
   }
 }

@@ -13,7 +13,20 @@
       <mat-option *ngFor="let l of allowedLimits" [value]="l" >{{l}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <span fxFlex>{{menu.title}}</span>
+  <span fxFlex>{{menuData.title}}</span>
+  <button type="button" mat-icon-button id="btnMore" [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="menuData">
+    <mat-icon>more_horiz</mat-icon>
+  </button>
+  <mat-menu #appMenu="matMenu" xPosition="before">
+      <ng-template matMenuContent let-aliasMenuItems="menuData.items">
+        <button mat-menu-item *ngFor="let item of aliasMenuItems" (click)="handleMenuAction(item.action)">
+          {{item.text}}
+        </button>
+      </ng-template>
+  </mat-menu>
+  <button *ngFor="let item of menuData.buttons" (click)="handleMenuAction(item.action)">
+    <mat-icon>{{item.icon}}</mat-icon>
+  </button>
   <span fxFlex="grow">&nbsp;</span>
   <button fxFlex="none" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>

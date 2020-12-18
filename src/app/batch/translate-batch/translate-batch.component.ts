@@ -6,7 +6,7 @@ import { MatTable } from '@angular/material/table';
 import { ReplaceComponent } from '../replace/replace.component';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MenuService } from 'src/app/menu.service';
+import { MenuItem, MenuService } from 'src/app/menu.service';
 
 const langRefsetMap: Record<string, string> = {
   en: '900000000000509007',
@@ -66,7 +66,14 @@ export class TranslateBatchComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-      this.menu.title = 'Batch';
+      this.menu.setMenuData({
+        title: 'Batch Translation',
+        items: [{
+          text: 'Load Batch Definition',
+          action: this.loadBatchDef,
+        }],
+        buttons: [],
+      });
     }
 
     displayDesc(descriptions: any[]) {
@@ -159,6 +166,8 @@ export class TranslateBatchComponent implements OnInit {
       let newDescriptionsFile = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
       let inactivateDescriptionsFile = 'Description ID\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\n';
       let changeDescriptionsFile = 'Description ID\tTerm (For reference only)\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
+      let replaceDescriptionsFile = 'Concept ID\tDescription ID\tPreferred Term (For reference only)\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\tNew Replacement Description ID\tReplacement term (For reference only)\tNew Translated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tNotes';
+
       if (Array.isArray(this.results) && this.results.length) {
         this.results.forEach((r: Result, index: number) => {
           if (this.selection.isSelected(this.resultsDisplay[index])) {
@@ -172,15 +181,16 @@ export class TranslateBatchComponent implements OnInit {
                   break;
                 // inactivate existing description, add new preferred synonym
                 case 'replaceDesc':
-                  newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
-                  inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
+                  replaceDescriptionsFile += `${r.descriptionItem.conceptId}\t${d.descriptionId}\t${d.oldTerm}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\t\t\t\t\t\t\t${d.term}\tsv\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+                  // newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+                  // inactivateDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\n`;
                   break;
                 // change acceptibility of existing description, add new preferred synonym
                 case 'changeDesc':
                   newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
-                  if (d.acceptability === 'PREFERRED') {
-                     changeDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${d.caseSignificance}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
-                  }
+                  // if (d.acceptability === 'PREFERRED') {
+                  //    changeDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${d.caseSignificance}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+                  // }
                   break;
                 default:
               }
@@ -188,14 +198,14 @@ export class TranslateBatchComponent implements OnInit {
           }
         });
 
-        this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.resultMetadata.part}.tsv`);
-
         if (this.batchSettings.batchSettingsForm.get('type').value === 'replaceDesc') {
-          this.saveFile(inactivateDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionInactivations_part_${this.snomed.resultMetadata.part}.tsv`);
-        }
+          this.saveFile(replaceDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionReplacements_part_${this.snomed.resultMetadata.part}.tsv`);
+        } else {
+          this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.resultMetadata.part}.tsv`);
 
-        if (this.batchSettings.batchSettingsForm.get('type').value === 'changeDesc') {
-          this.saveFile(changeDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionChanges_part_${this.snomed.resultMetadata.part}.tsv`);
+          if (this.batchSettings.batchSettingsForm.get('type').value === 'changeDesc') {
+            this.saveFile(changeDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionChanges_part_${this.snomed.resultMetadata.part}.tsv`);
+          }
         }
       }
     }
