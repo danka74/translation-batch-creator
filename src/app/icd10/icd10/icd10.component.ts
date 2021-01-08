@@ -46,12 +46,14 @@ export class Icd10Component implements OnInit {
         title: 'ICD-10',
         items: [{
           text: 'Run',
-          action: this.run,
+          action: this.run.bind(this),
+          disabled: false,
         }],
         buttons: [{
           text: 'Run',
-          action: this.run,
+          action: this.run.bind(this),
           icon: 'play_arrow',
+          disabled: true,
         }],
       }) ;
     }
@@ -65,9 +67,13 @@ export class Icd10Component implements OnInit {
     }
 
     run() {
-      const codes = this.icd10Form.get('codes').value
-        .match(/[A-Z]\d\d\.?\d?\w?/g)
-        .map((code: string) => code.toUpperCase())
+      const codes1 = this.icd10Form.get('codes').value
+        .toUpperCase()
+        .match(/[A-Z]\d\d\.?\d?\w?/g);
+      if (!codes1) {
+        return;
+      }
+      const codes2 = codes1
         .map((code: string) => {
           if (code.match(/^[A-Z]\d\d\w\w?$/)) {
             return code.substr(0, 3) + '.' + code.substr(3, 2);
@@ -82,11 +88,11 @@ export class Icd10Component implements OnInit {
           }
           return code;
         });
-      console.log(codes);
+      console.log(codes2);
       this.running = true;
       this.results = [];
       this.resultTable.renderRows();
-      this.snomed.findIcd10(codes).subscribe({
+      this.snomed.findIcd10(codes2).subscribe({
         next: (data: Icd10Result) => {
           console.log(data);
           data.items.forEach((item: Icd10ResultItem) => {

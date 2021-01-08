@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class MenuItem {
   text: string;
   action: Function;
+  disabled: boolean;
   icon?: string;
 }
 

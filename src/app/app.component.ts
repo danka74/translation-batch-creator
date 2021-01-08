@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   allowedLimits: string[];
 
-  menuData: Menu;
+  public menuData: Menu;
 
   constructor(
     private snomed: SnomedService,
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.branches = this.snomed.getBranches();
     this.allowedLimits = this.snomed.getAllowedLimits();
     this.menu.getMenuData().subscribe(menuData => this.menuData = menuData);
+    this.menu.setMenuData({buttons: [], items: [], title: ''});
   }
 
   ngAfterViewInit(): void {

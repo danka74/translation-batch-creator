@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { SnomedService, DescriptionItem, ResultMetadata, Description, createRegExp } from '../../snomed.service';
 import { CriteriaComponent } from '../criteria/criteria.component';
 import { BatchSettingsComponent } from '../batch-settings/batch-settings.component';
@@ -7,6 +7,7 @@ import { ReplaceComponent } from '../replace/replace.component';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MenuItem, MenuService } from 'src/app/menu.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 const langRefsetMap: Record<string, string> = {
   en: '900000000000509007',
@@ -63,18 +64,23 @@ export class TranslateBatchComponent implements OnInit {
   constructor(
     public snomed: SnomedService,
     private menu: MenuService,
-    ) { }
+  ) { }
 
-    ngOnInit(): void {
-      this.menu.setMenuData({
-        title: 'Batch Translation',
-        items: [{
-          text: 'Load Batch Definition',
-          action: this.loadBatchDef,
-        }],
-        buttons: [],
-      });
-    }
+   ngOnInit(): void {
+    this.menu.setMenuData({
+      title: 'Batch Translation',
+      items: [{
+        text: 'Load Batch Definition',
+        action: this.loadBatchDef,
+        disabled: false,
+      }, {
+        text: 'Save Batch Definition',
+        action: this.saveBatchDef,
+        disabled: true,
+      }],
+      buttons: [],
+    });
+  }
 
     displayDesc(descriptions: any[]) {
       return descriptions.reduce((acc, cur) => {
