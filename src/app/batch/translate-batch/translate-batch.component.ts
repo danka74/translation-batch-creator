@@ -169,10 +169,18 @@ export class TranslateBatchComponent implements OnInit {
     }
 
     createBatchFile() {
-      let newDescriptionsFile = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
-      // let inactivateDescriptionsFile = 'Description ID\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\n';
-      let changeDescriptionsFile = 'Description ID\tTerm (For reference only)\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
-      let replaceDescriptionsFile = 'Concept ID\tDescription ID\tPreferred Term (For reference only)\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\tNew Replacement Description ID\tReplacement term (For reference only)\tNew Translated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tNotes\n';
+      let fileContents = '';
+      switch (this.batchSettings.batchSettingsForm.get('type').value) {
+        case 'newDescSyn':
+          fileContents = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
+          break;
+        case 'replaceDesc':
+          fileContents = 'Concept ID\tDescription ID\tPreferred Term (For reference only)\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\tNew Replacement Description ID\tReplacement term (For reference only)\tNew Translated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tNotes\n';
+          break;
+        case 'newDescPT':
+          fileContents = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
+          break;
+      }
 
       if (Array.isArray(this.results) && this.results.length) {
         this.results.forEach((r: Result, index: number) => {
@@ -182,19 +190,15 @@ export class TranslateBatchComponent implements OnInit {
               switch (this.batchSettings.batchSettingsForm.get('type').value) {
                 // add new acceptable synonym
                 case 'newDescSyn':
-                  console.log(r.descriptionItem.fsn);
-                  newDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
                   break;
                 // inactivate existing description, add new synonym with same acceptibility
                 case 'replaceDesc':
-                  replaceDescriptionsFile += `${r.descriptionItem.conceptId}\t${d.descriptionId}\t${d.oldTerm}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\t\t\t\t\t\t\t${d.term}\tsv\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${d.descriptionId}\t${d.oldTerm}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\t\t\t\t\t\t\t${d.term}\tsv\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
                   break;
                 // change acceptibility of existing description, add new preferred synonym
-                case 'changeDesc':
-                  changeDescriptionsFile += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
-                  // if (d.acceptability === 'PREFERRED') {
-                  //    changeDescriptionsFile += `${d.descriptionId}\t${d.oldTerm}\t${d.caseSignificance}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
-                  // }
+                case 'newDescPT':
+                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tPREFERRED\n`;
                   break;
                 default:
               }
@@ -202,18 +206,18 @@ export class TranslateBatchComponent implements OnInit {
           }
         });
 
+        let filename = this.batchSettings.batchSettingsForm.get('name').value;
         switch (this.batchSettings.batchSettingsForm.get('type').value) {
           case 'replaceDesc':
-            this.saveFile(replaceDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionReplacements_part_${this.snomed.resultMetadata.part}.tsv`);
+            filename += '_DescriptionReplacements_part_';
             break;
           case 'newDescSyn':
-            this.saveFile(newDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionAdditions_part_${this.snomed.resultMetadata.part}.tsv`);
+          case 'newDescPT':
+            filename += '_DescriptionAdditions_part_';
             break;
-          case 'changeDesc':
-            this.saveFile(changeDescriptionsFile, `${this.batchSettings.batchSettingsForm.get('name').value}_DescriptionChanges_part_${this.snomed.resultMetadata.part}.tsv`);
-            break;
-
         }
+        filename += this.snomed.resultMetadata.part;
+        this.saveFile(fileContents, filename);
       }
     }
 
