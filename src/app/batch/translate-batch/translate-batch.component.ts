@@ -172,13 +172,13 @@ export class TranslateBatchComponent implements OnInit {
       let fileContents = '';
       switch (this.batchSettings.batchSettingsForm.get('type').value) {
         case 'newDescSyn':
-          fileContents = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
+          fileContents = 'Concept ID\tGB/US FSN Term (For reference only)\tPreferred Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tNotes\n';
           break;
         case 'replaceDesc':
           fileContents = 'Concept ID\tDescription ID\tPreferred Term (For reference only)\tTerm (For reference only)\tInactivation Reason\tAssociation Target ID1\tAssociation Target ID2\tAssociation Target ID3\tAssociation Target ID4\tNew Replacement Description ID\tReplacement term (For reference only)\tNew Translated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tNotes\n';
           break;
         case 'newDescPT':
-          fileContents = 'Concept ID\tGB/US FSN Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\n';
+          fileContents = 'Concept ID\tGB/US FSN Term (For reference only)\tPreferred Term (For reference only)\tTranslated Term\tLanguage Code\tCase significance\tType\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tLanguage reference set\tAcceptability\tNotes\n';
           break;
       }
 
@@ -190,7 +190,7 @@ export class TranslateBatchComponent implements OnInit {
               switch (this.batchSettings.batchSettingsForm.get('type').value) {
                 // add new acceptable synonym
                 case 'newDescSyn':
-                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
                   break;
                 // inactivate existing description, add new synonym with same acceptibility
                 case 'replaceDesc':
@@ -198,7 +198,7 @@ export class TranslateBatchComponent implements OnInit {
                   break;
                 // change acceptibility of existing description, add new preferred synonym
                 case 'newDescPT':
-                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tPREFERRED\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tPREFERRED\n`;
                   break;
                 default:
               }
