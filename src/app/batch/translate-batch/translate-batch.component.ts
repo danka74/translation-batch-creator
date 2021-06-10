@@ -94,6 +94,7 @@ export class TranslateBatchComponent implements OnInit {
         this.results = [];
         this.resultsDisplay = [];
         this.resultTable.renderRows();
+        this.selection.clear();
 
         this.snomed.findDescriptions({
           ecl: this.batchSettings.batchSettingsForm.get('ecl').value,
@@ -148,6 +149,8 @@ export class TranslateBatchComponent implements OnInit {
             this.resultTable.renderRows();
             this.endOfResults = this.snomed.endOfResults();
             this.running = false;
+            this.selection.clear();
+            this.masterToggle();
             // console.log(this.results);
           },
         });
