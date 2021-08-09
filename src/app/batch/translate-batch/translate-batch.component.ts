@@ -145,6 +145,17 @@ export class TranslateBatchComponent implements OnInit {
               newDescriptionsDisplay,
             });
           },
+          error: (err) => {
+            this.running = false;
+            this.results = [];
+            this.resultsDisplay = [{
+              conceptId: '',
+              descriptionsDisplay: 'Error ' + err,
+              newDescriptionsDisplay: '',
+            }];
+            this.resultTable.renderRows();
+            this.selection.clear();
+          },
           complete: () => {
             this.resultTable.renderRows();
             this.endOfResults = this.snomed.endOfResults();

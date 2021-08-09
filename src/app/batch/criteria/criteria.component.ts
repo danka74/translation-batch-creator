@@ -3,7 +3,8 @@ import { FormGroup, FormControl, FormArray, FormBuilder, Validators, ValidatorFn
 import { MatTable } from '@angular/material/table';
 import { MatExpansionPanel } from '@angular/material/expansion';
 
-interface Criterium {
+export interface Criterium {
+  qualifier: string;
   present: boolean;
   lang: string;
   type: string;
@@ -23,9 +24,10 @@ export class CriteriaComponent implements OnInit {
 
   public criteria: Criterium[] = [];
 
-  displayedColumns: string[] = ['present', 'lang', 'type', 'accept', 'regexp', 'buttons'];
+  displayedColumns: string[] = ['qualifier', 'present', 'lang', 'type', 'accept', 'regexp', 'buttons'];
 
   criteriaForm = this.fb.group({
+    qualifier: ['exist', Validators.required],
     present: [true, Validators.required],
     lang: ['', Validators.required],
     type: [''],
@@ -33,7 +35,7 @@ export class CriteriaComponent implements OnInit {
     regexp: ['', Validators.required],
   }, {validators: this.duplicateValidator.bind(this)});
 
-  duplicateValidator(control: FormGroup): ValidationErrors | null {
+  duplicateValidator(control: AbstractControl): ValidationErrors | null {
     const duplicate = this.criteria.find((c: Criterium) => {
       return c.present === control.get('present').value &&
         c.lang === control.get('lang').value &&

@@ -2,17 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
 import { map, mergeMap, switchMap, filter, tap } from 'rxjs/operators';
+import { Criterium } from './batch/criteria/criteria.component';
 
 export interface Param {
   term: string;
   ecl: string;
-  criteria: {
-    present: boolean;
-    lang: string;
-    type: string;
-    accept: string;
-    regexp: string;
-  }[];
+  criteria: Criterium[];
 }
 
 export interface Description {
@@ -210,25 +205,47 @@ export class SnomedService {
               }),
               filter((item: DescriptionItem) => {
                 // all criteria must be fulfilled
-                return param.criteria.every(c => {
+                let result: boolean = param.criteria.every(c => {
                   const r = createRegExp(c.regexp);
                   // console.log(c);
-                  const descFound: boolean = item.descriptions.find((d) => {
-                    // console.log(d.term);
-                    if (d.lang !== c.lang) {
-                      return false;
-                    }
-                    const langEq = d.lang === c.lang;
-                    const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
-                    const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
-                    const termTest = r.test(d.term) == c.present;
-                    return d.lang === c.lang &&
-                    ((c.type && c.type.length) ? c.type === d.type : true) &&
-                    ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
-                    (r.test(d.term) == c.present);
-                  }) !== undefined;
-                  return descFound;
+                  if (c.qualifier === 'exist') {
+                    const descFound: boolean = item.descriptions.find((d) => {
+                      // console.log(d.term);
+                      if (d.lang !== c.lang) {
+                        return false;
+                      }
+                      const langEq = d.lang === c.lang;
+                      const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
+                      const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
+                      const termTest = r.test(d.term) == c.present;
+                      return d.lang === c.lang &&
+                      ((c.type && c.type.length) ? c.type === d.type : true) &&
+                      ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
+                      (r.test(d.term) == c.present);
+                    }) !== undefined;
+                    return descFound;
+                  } else { // c.criteria === 'all'
+                    const descFound: boolean = item.descriptions.every((d) => {
+                      // console.log(d.term);
+                      if (d.lang !== c.lang) {
+                        return false;
+                      }
+                      const langEq = d.lang === c.lang;
+                      const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
+                      const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
+                      const termTest = r.test(d.term) == c.present;
+                      return d.lang === c.lang &&
+                      ((c.type && c.type.length) ? c.type === d.type : true) &&
+                      ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
+                      (r.test(d.term) == c.present);
+                    }) !== undefined;
+                    return descFound;
+                  }
                 });
+
+
+
+                return result;
               }),
               );
             }

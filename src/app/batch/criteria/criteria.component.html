@@ -7,6 +7,11 @@
     <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
       <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
       <mat-table [dataSource]="criteria">
+        <ng-container matColumnDef="qualifier">
+          <mat-header-cell *matHeaderCellDef>Qual.</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.qualifier === 'exist' ? 'Exists' : 'All'}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="present">
           <mat-header-cell *matHeaderCellDef>Present</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.present === true ? 'Present' : 'Not Present'}} </mat-cell>
@@ -46,7 +51,12 @@
       <br/>
       <form [formGroup]="criteriaForm">
         <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
-
+          <mat-form-field fxFlex="3rem">
+            <select matNativeControl required formControlName="qualifier">
+              <option value="exist">Exists</option>
+              <option value="all">All</option>
+            </select>
+          </mat-form-field>
           <mat-form-field fxFlex="5rem">
             <select matNativeControl required formControlName="present">
               <option [ngValue]="true">Present</option>

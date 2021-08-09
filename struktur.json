@@ -1,0 +1,42 @@
+{
+  "settings": {
+    "name": "struktur",
+    "type": "newDescSyn",
+    "inactivationReason": "Non-conformance to editorial policy",
+    "ecl": "<<442083009 | anatomisk eller förvärvad kroppsstruktur |",
+    "term": "struktur"
+  },
+  "criteria": [
+    {
+      "qualifier": "exist",
+      "present": true,
+      "lang": "sv",
+      "type": "",
+      "accept": "",
+      "regexp": "struktur$"
+    },
+    {
+      "qualifier": "exist",
+      "present": true,
+      "lang": "en",
+      "type": "FSN",
+      "accept": null,
+      "regexp": "[Ss]tructure"
+    },
+    {
+      "qualifier": "exist",
+      "present": false,
+      "lang": "en",
+      "type": "SYNONYM",
+      "accept": null,
+      "regexp": "[Ss]tructure"
+    }
+  ],
+  "replace": [
+    {
+      "lang": "sv",
+      "replace": ", struktur$",
+      "replaceWith": ""
+    }
+  ]
+}
