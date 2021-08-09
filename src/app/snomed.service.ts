@@ -73,7 +73,7 @@ export const createRegExp = (s: string): RegExp => {
 })
 export class SnomedService {
 
-  readonly host = '/snowstorm/snomed-ct/';
+  readonly host = '/snowstorm/';
   private _branch = 'MAIN/SNOMEDCT-SE';
   private _limit = '500';
 
