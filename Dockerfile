@@ -12,7 +12,7 @@ WORKDIR /app-ui
 COPY . .
 
 # Build the project and copy the files
-RUN npm run ng build -- --configuration production
+RUN npm run ng build -- --configuration production --base-href /scttool/ --deploy-url /scttool/
 
 
 FROM nginx:alpine
