@@ -23,6 +23,8 @@ export class CriteriaComponent implements OnInit {
 
   public criteria: Criterium[] = [];
 
+  // isEditing: boolean[] = [];
+
   displayedColumns: string[] = ['qualifier', 'present', 'lang', 'type', 'accept', 'regexp', 'buttons'];
 
   criteriaForm = this.fb.group({
@@ -36,7 +38,8 @@ export class CriteriaComponent implements OnInit {
 
   duplicateValidator(control: AbstractControl): ValidationErrors | null {
     const duplicate = this.criteria.find((c: Criterium) => {
-      return c.present === control.get('present').value &&
+      return c.qualifier === control.get('qualifier').value &&
+        c.present === control.get('present').value &&
         c.lang === control.get('lang').value &&
         c.type === control.get('type').value &&
         c.accept === control.get('accept').value &&
@@ -55,7 +58,7 @@ export class CriteriaComponent implements OnInit {
   }
 
   clearForm() {
-    this.criteriaForm.reset({present: true, lang: '', regexp: ''});
+    this.criteriaForm.reset({qualifier: 'exist', present: true, lang: '', regexp: ''});
     this.criteriaForm.markAsPristine();
     this.criteriaForm.markAsUntouched();
   }

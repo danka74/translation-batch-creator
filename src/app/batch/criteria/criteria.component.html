@@ -40,7 +40,7 @@
         <ng-container matColumnDef="buttons">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let element; let i = index">
-            <button mat-icon-button (click)="copy(i)"><mat-icon>content_copy</mat-icon></button>
+            <button mat-icon-button (click)="copy(i); remove(i)"><mat-icon>mode_edit</mat-icon></button>
             <button mat-icon-button (click)="remove(i)"><mat-icon>clear</mat-icon></button>
           </mat-cell>
         </ng-container>
