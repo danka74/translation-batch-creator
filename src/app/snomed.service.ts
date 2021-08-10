@@ -225,20 +225,14 @@ export class SnomedService {
                     }) !== undefined;
                     return descFound;
                   } else { // c.criteria === 'all'
-                    const descFound: boolean = item.descriptions.every((d) => {
-                      // console.log(d.term);
-                      if (d.lang !== c.lang) {
-                        return false;
-                      }
-                      const langEq = d.lang === c.lang;
-                      const typeEq = ((c.type && c.type.length) ? c.type === d.type : true);
-                      const acceptEq = ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
-                      const termTest = r.test(d.term) == c.present;
+                    const descFound: boolean = item.descriptions.filter((d) => {
                       return d.lang === c.lang &&
-                      ((c.type && c.type.length) ? c.type === d.type : true) &&
-                      ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true) &&
-                      (r.test(d.term) == c.present);
-                    }) !== undefined;
+                        ((c.type && c.type.length) ? c.type === d.type : true) &&
+                        ((c.accept && c.accept.length) ? c.accept === d.acceptabilityMap[langRefsetMap[d.lang]] : true);
+                    }).every((d) => {
+                      const termTest = r.test(d.term) == c.present;
+                      return (r.test(d.term) == c.present);
+                    });
                     return descFound;
                   }
                 });
