@@ -20,7 +20,6 @@ export interface Criterium {
 export class CriteriaComponent implements OnInit {
 
   @ViewChild(MatTable) table: MatTable<any>;
-  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
 
   public criteria: Criterium[] = [];
 

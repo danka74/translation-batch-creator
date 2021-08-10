@@ -9,8 +9,6 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 })
 export class BatchSettingsComponent implements OnInit {
 
-  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
-
   batchSettingsForm = this.fb.group({
     name: ['', Validators.required],
     type: ['newDescSyn', Validators.required],

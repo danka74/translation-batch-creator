@@ -18,8 +18,6 @@ export class ReplaceComponent implements OnInit {
 
   @ViewChild(MatTable) table: MatTable<any>;
   displayedColumns: string[] = ['lang', 'replace', 'replaceWith', 'buttons'];
-  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
-
 
   public replace: Replace[] = [];
 

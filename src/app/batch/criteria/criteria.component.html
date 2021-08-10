@@ -1,6 +1,6 @@
 <mat-card class="batch">
   <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
-    <span (click)="expansionPanel.toggle()" fxFlex>Criteria</span>
+    <span fxFlex>Criteria</span>
     <button mat-icon-button (click)="clearTable()" [disabled]="criteria.length===0"><mat-icon>delete_outline</mat-icon></button>
   </mat-card-title>
   <mat-card-content>
@@ -13,8 +13,8 @@
         </ng-container>
 
         <ng-container matColumnDef="present">
-          <mat-header-cell *matHeaderCellDef>Present</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.present === true ? 'Present' : 'Not Present'}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef>Match</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.present === true ? 'Yes' : 'No'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="lang">
@@ -50,27 +50,27 @@
       </mat-table>
       <br/>
       <form [formGroup]="criteriaForm">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
-          <mat-form-field fxFlex="3rem">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3rem">
+          <mat-form-field class="mat-column-qualifier">
             <select matNativeControl required formControlName="qualifier">
               <option value="exist">Exists</option>
               <option value="all">All</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="5rem">
+          <mat-form-field class="mat-column-present">
             <select matNativeControl required formControlName="present">
-              <option [ngValue]="true">Present</option>
-              <option [ngValue]="false">Not present</option>
+              <option [ngValue]="true">Yes</option>
+              <option [ngValue]="false">No</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="5rem">
+          <mat-form-field class="mat-column-lang">
             <mat-label>Language</mat-label>
             <select matNativeControl required formControlName="lang">
               <option value="sv">Swedish</option>
               <option value="en">English</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="3rem">
+          <mat-form-field class="mat-column-type">
             <mat-label>Type</mat-label>
             <select matNativeControl formControlName="type">
               <option value="">-</option>
@@ -78,7 +78,7 @@
               <option value="SYNONYM">SYN</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex="3rem">
+          <mat-form-field class="mat-column-accept">
             <mat-label>Accept.</mat-label>
             <select matNativeControl formControlName="accept">
               <option value="">-</option>
@@ -86,12 +86,12 @@
               <option value="ACCEPTABLE">ACCEPT</option>
             </select>
           </mat-form-field>
-          <mat-form-field fxFlex>
+          <mat-form-field class="mat-column-regexp">
             <mat-label>Regular expression</mat-label>
             <input matInput type="text" formControlName="regexp">
             <mat-error>Regular expression required</mat-error>
           </mat-form-field>
-          <div fxFlex="5rem">
+          <div class="mat-column-buttons">
             <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
             <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
           </div>

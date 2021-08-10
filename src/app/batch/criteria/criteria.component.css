@@ -17,8 +17,8 @@
 .mat-column-present {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 6rem !important;
-  width: 6rem !important;
+  flex: 0 0 3rem !important;
+  width: 3rem !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -33,8 +33,8 @@
 .mat-column-lang {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 5rem !important;
-  width: 5rem !important;
+  flex: 0 0 4rem !important;
+  width: 4rem !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -108,6 +108,11 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+}
+
+.mat-cell,
+.mat-header-cell {
+  padding-right: 0.3rem;
 }
 .mat-cell:last-of-type,
 .mat-header-cell:last-of-type {
