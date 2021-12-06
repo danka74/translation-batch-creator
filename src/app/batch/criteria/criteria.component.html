@@ -55,7 +55,7 @@
               <select matNativeControl formControlName="type">
                 <option value="">-</option>
                 <option value="FSN">FSN</option>
-                <option value="SYNONYM">SYN</option>
+                <option value="SYN">SYN</option>
               </select>
             </mat-form-field>
           </mat-footer-cell>
@@ -63,14 +63,14 @@
 
         <ng-container matColumnDef="accept">
           <mat-header-cell *matHeaderCellDef>Accept.</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.accept === 'PREFERRED' ? 'PT' : element.accept === 'ACCEPTABLE' ? 'ACCEPT' : '-'}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.accept === 'PREFERRED' ? 'P' : element.accept === 'ACCEPTABLE' ? 'A' : '-'}} </mat-cell>
           <mat-footer-cell *matFooterCellDef>
             <mat-form-field>
               <mat-label>Accept.</mat-label>
               <select matNativeControl formControlName="accept">
                 <option value="">-</option>
-                <option value="PREFERRED">PT</option>
-                <option value="ACCEPTABLE">ACCEPT</option>
+                <option value="PREFERRED">P</option>
+                <option value="ACCEPTABLE">A</option>
               </select>
             </mat-form-field>
           </mat-footer-cell>
