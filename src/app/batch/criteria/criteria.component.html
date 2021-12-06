@@ -4,37 +4,88 @@
     <button mat-icon-button (click)="clearTable()" [disabled]="criteria.length===0"><mat-icon>delete_outline</mat-icon></button>
   </mat-card-title>
   <mat-card-content>
-    <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
-      <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
+    <form [formGroup]="criteriaForm">
       <mat-table [dataSource]="criteria">
         <ng-container matColumnDef="qualifier">
           <mat-header-cell *matHeaderCellDef>Qual.</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.qualifier === 'exist' ? 'Exists' : 'All'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <select matNativeControl required formControlName="qualifier">
+                <option value="exist">Exists</option>
+                <option value="all">All</option>
+              </select>
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="present">
           <mat-header-cell *matHeaderCellDef>Match</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.present === true ? 'Yes' : 'No'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <select matNativeControl required formControlName="present">
+                <option [ngValue]="true">Yes</option>
+                <option [ngValue]="false">No</option>
+              </select>
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="lang">
           <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.lang === 'sv' ? 'Swedish' : 'English'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <mat-label>Language</mat-label>
+              <select matNativeControl required formControlName="lang">
+                <option value="sv">Swedish</option>
+                <option value="en">English</option>
+              </select>
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="type">
           <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.type === 'FSN' ? 'FSN' : element.type === 'SYNONYM' ? 'SYN' : '-'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <mat-label>Type</mat-label>
+              <select matNativeControl formControlName="type">
+                <option value="">-</option>
+                <option value="FSN">FSN</option>
+                <option value="SYNONYM">SYN</option>
+              </select>
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="accept">
           <mat-header-cell *matHeaderCellDef>Accept.</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.accept === 'PREFERRED' ? 'PT' : element.accept === 'ACCEPTABLE' ? 'ACCEPT' : '-'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <mat-label>Accept.</mat-label>
+              <select matNativeControl formControlName="accept">
+                <option value="">-</option>
+                <option value="PREFERRED">PT</option>
+                <option value="ACCEPTABLE">ACCEPT</option>
+              </select>
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="regexp">
           <mat-header-cell *matHeaderCellDef>Regular expression</mat-header-cell>
           <mat-cell *matCellDef="let element" style="word-wrap: word-break;"> {{element.regexp}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <mat-label>Regular expression</mat-label>
+              <input matInput type="text" formControlName="regexp">
+              <mat-error>Regular expression required</mat-error>
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="buttons">
@@ -43,63 +94,21 @@
             <button mat-icon-button (click)="copy(i); remove(i)"><mat-icon>mode_edit</mat-icon></button>
             <button mat-icon-button (click)="remove(i)"><mat-icon>clear</mat-icon></button>
           </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <button mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
+            <button mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
+          </mat-footer-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+
       </mat-table>
-      <br/>
-      <form [formGroup]="criteriaForm">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3rem">
-          <mat-form-field class="mat-column-qualifier">
-            <select matNativeControl required formControlName="qualifier">
-              <option value="exist">Exists</option>
-              <option value="all">All</option>
-            </select>
-          </mat-form-field>
-          <mat-form-field class="mat-column-present">
-            <select matNativeControl required formControlName="present">
-              <option [ngValue]="true">Yes</option>
-              <option [ngValue]="false">No</option>
-            </select>
-          </mat-form-field>
-          <mat-form-field class="mat-column-lang">
-            <mat-label>Language</mat-label>
-            <select matNativeControl required formControlName="lang">
-              <option value="sv">Swedish</option>
-              <option value="en">English</option>
-            </select>
-          </mat-form-field>
-          <mat-form-field class="mat-column-type">
-            <mat-label>Type</mat-label>
-            <select matNativeControl formControlName="type">
-              <option value="">-</option>
-              <option value="FSN">FSN</option>
-              <option value="SYNONYM">SYN</option>
-            </select>
-          </mat-form-field>
-          <mat-form-field class="mat-column-accept">
-            <mat-label>Accept.</mat-label>
-            <select matNativeControl formControlName="accept">
-              <option value="">-</option>
-              <option value="PREFERRED">PT</option>
-              <option value="ACCEPTABLE">ACCEPT</option>
-            </select>
-          </mat-form-field>
-          <mat-form-field class="mat-column-regexp">
-            <mat-label>Regular expression</mat-label>
-            <input matInput type="text" formControlName="regexp">
-            <mat-error>Regular expression required</mat-error>
-          </mat-form-field>
-          <div class="mat-column-buttons">
-            <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="criteriaForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
-            <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="criteriaForm.pristine"><mat-icon>clear</mat-icon></button>
-          </div>
-          <div *ngIf="criteriaForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
-            Criteria already exists
-          </div>
-        </div>
-      </form>
-    </mat-expansion-panel>
+      <div fxLayout="row" *ngIf="criteriaForm.hasError('duplicateEntry')" class="error">
+        Criteria already exists
+      </div>
+    </form>
+
   </mat-card-content>
 </mat-card>

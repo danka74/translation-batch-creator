@@ -51,7 +51,4 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   }
 
-  handleMenuAction(action: Function) {
-    action();
-  }
 }

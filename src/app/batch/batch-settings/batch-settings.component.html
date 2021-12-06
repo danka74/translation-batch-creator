@@ -4,8 +4,6 @@
     <button mat-icon-button (click)="clear()" [disabled]="batchSettingsForm.pristine"><mat-icon>delete_outline</mat-icon></button>
   </mat-card-title>
   <mat-card-content>
-    <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
-    <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
     <form [formGroup]="batchSettingsForm">
       <div fxLayout="row wrap" fxFlexFill fxLayoutGap="0.3em">
         <mat-form-field fxFlex="100%">
@@ -38,7 +36,6 @@
         </mat-form-field>
       </div>
     </form>
-  </mat-expansion-panel>
   </mat-card-content>
 </mat-card>
 

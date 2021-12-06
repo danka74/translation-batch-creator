@@ -1,8 +1,8 @@
 .mat-column-lang {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 5rem !important;
-  width: 5rem !important;
+  flex: 0 0 4rem !important;
+  width: 4rem !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -61,12 +61,19 @@
   hyphens: auto;
 }
 
+.mat-cell,
+.mat-header-cell,
+.mat-footer-cell {
+  padding-right: 0.3rem;
+}
 .mat-cell:last-of-type,
-.mat-header-cell:last-of-type {
+.mat-header-cell:last-of-type,
+.mat-footer-cell:last-of-type  {
   padding-right: 0;
 }
 
 .mat-cell:first-of-type,
-.mat-header-cell:first-of-type {
+.mat-header-cell:first-of-type,
+.mat-footer-cell:first-of-type {
   padding-left: 0;
 }

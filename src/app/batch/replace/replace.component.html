@@ -4,63 +4,66 @@
     <button mat-icon-button (click)="clearTable()" [disabled]="replace.length===0"><mat-icon>delete_outline</mat-icon></button>
   </mat-card-title>
   <mat-card-content>
-    <mat-expansion-panel class="mat-elevation-z0" hideToggle [expanded]="true">
-      <mat-expansion-panel-header style="position: absolute; right: 0px; top: 0px;"></mat-expansion-panel-header>
+    <form [formGroup]="replaceForm">
       <mat-table [dataSource]="replace">
 
         <ng-container matColumnDef="lang">
           <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.lang === 'sv' ? 'Swedish' : 'English'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field>
+              <mat-label>Language</mat-label>
+              <select matNativeControl required formControlName="lang">
+                <option value="sv">Swedish</option>
+                <option value="en">English</option>
+              </select>
+            </mat-form-field>
+
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="replace">
           <mat-header-cell *matHeaderCellDef>Replace</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.replace}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field fxFlex="1 1 auto">
+              <mat-label>Replace</mat-label>
+              <input matInput type="text" formControlName="replace">
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="replaceWith">
           <mat-header-cell *matHeaderCellDef>Replace With</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.replaceWith}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <mat-form-field fxFlex="1 1 auto">
+              <mat-label>Replace With</mat-label>
+              <input matInput type="text" formControlName="replaceWith">
+            </mat-form-field>
+          </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="buttons">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let element; let i = index">
-            <button mat-icon-button (click)="copy(i)"><mat-icon>content_copy</mat-icon></button>
+            <button mat-icon-button (click)="copy(i); remove(i)"><mat-icon>mode_edit</mat-icon></button>
             <button mat-icon-button (click)="remove(i)"><mat-icon>clear</mat-icon></button>
           </mat-cell>
+          <mat-footer-cell *matFooterCellDef>
+            <button mat-icon-button (click)="add()" [disabled]="replaceForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
+            <button mat-icon-button (click)="clearForm()" [disabled]="replaceForm.pristine"><mat-icon>clear</mat-icon></button>
+          </mat-footer-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
       </mat-table>
-      <br/>
-      <form [formGroup]="replaceForm">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.3em">
-          <mat-form-field fxFlex="5rem">
-            <mat-label>Language</mat-label>
-            <select matNativeControl required formControlName="lang">
-              <option value="sv">Swedish</option>
-              <option value="en">English</option>
-            </select>
-          </mat-form-field>
-          <mat-form-field fxFlex="1 1 auto">
-            <mat-label>Replace</mat-label>
-            <input matInput type="text" formControlName="replace">
-          </mat-form-field>
-          <mat-form-field fxFlex="1 1 auto">
-            <mat-label>Replace With</mat-label>
-            <input matInput type="text" formControlName="replaceWith">
-          </mat-form-field>
-          <div fxFlex="5rem">
-            <button fxFlex="nogrow" mat-icon-button (click)="add()" [disabled]="replaceForm.invalid"><mat-icon>add_circle_outline</mat-icon></button>
-            <button fxFlex="nogrow" mat-icon-button (click)="clearForm()" [disabled]="replaceForm.pristine"><mat-icon>clear</mat-icon></button>
-          </div>
-          <div fxFlex="100%" *ngIf="replaceForm.hasError('duplicateEntry')" fxFlex="100%" class="error">
-            Replacement already exists
-          </div>
-        </div>
-      </form>
-    </mat-expansion-panel>
+
+      <div fxLayout="row" *ngIf="replaceForm.hasError('duplicateEntry')" class="error">
+        Replacement already exists
+      </div>
+    </form>
   </mat-card-content>
 </mat-card>

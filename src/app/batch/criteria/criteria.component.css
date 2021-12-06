@@ -1,8 +1,6 @@
 .mat-column-qualifier {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 3rem !important;
-  width: 3rem !important;
+  flex: 0 0 3rem ;
+  width: 3rem ;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -15,10 +13,8 @@
 }
 
 .mat-column-present {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 3rem !important;
-  width: 3rem !important;
+  flex: 0 0 3rem ;
+  width: 3rem ;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -31,10 +27,8 @@
 }
 
 .mat-column-lang {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 4rem !important;
-  width: 4rem !important;
+  flex: 0 0 4rem ;
+  width: 4rem ;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -47,10 +41,8 @@
 }
 
 .mat-column-type {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 3rem !important;
-  width: 3rem !important;
+  flex: 0 0 3rem ;
+  width: 3rem ;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -63,10 +55,8 @@
 }
 
 .mat-column-accept {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 3rem !important;
-  width: 3rem !important;
+  flex: 0 0 3rem ;
+  width: 3rem ;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -79,9 +69,7 @@
 }
 
 .mat-column-regexp {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 1 1 auto !important;
+  flex: 1 1 auto;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -94,11 +82,8 @@
 }
 
 .mat-column-buttons {
-  justify-content:flex-end !important;
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 5rem !important;
-  width: 5rem !important;
+  flex: 0 0 5rem ;
+  width: 5rem ;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -111,15 +96,18 @@
 }
 
 .mat-cell,
-.mat-header-cell {
+.mat-header-cell,
+.mat-footer-cell {
   padding-right: 0.3rem;
 }
 .mat-cell:last-of-type,
-.mat-header-cell:last-of-type {
+.mat-header-cell:last-of-type,
+.mat-footer-cell:last-of-type  {
   padding-right: 0;
 }
 
 .mat-cell:first-of-type,
-.mat-header-cell:first-of-type {
+.mat-header-cell:first-of-type,
+.mat-footer-cell:first-of-type {
   padding-left: 0;
 }

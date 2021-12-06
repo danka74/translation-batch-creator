@@ -18,7 +18,7 @@ const caseSignificanceMap: Record<string, string> = {
   CASE_INSENSITIVE: 'ci',
   ENTIRE_TERM_CASE_SENSITIVE: 'CS',
   INITIAL_CHARACTER_CASE_INSENSITIVE: 'cI',
-}
+};
 
 interface ResultsDisplay {
   conceptId: string;
@@ -171,12 +171,12 @@ export class TranslateBatchComponent implements OnInit {
     exportResults() {
       const output = 'Concept ID\tExisting description(s)\tProposal(s)\n' +
         this.results.reduce((acc: string, r: Result) => {
-          return acc + r.descriptionItem.conceptId + '\t' + r.descriptionItem.descriptions.reduce((acc: string, cur: Description) => {
+          return acc + r.descriptionItem.conceptId + '\t' + r.descriptionItem.descriptions.reduce((newDescs: string, cur: Description) => {
             const acceptability = cur.acceptabilityMap[langRefsetMap[cur.lang]];
             const type = cur.type;
-            return acc + cur.term + ` (${cur.lang}, ${cur.type}, ${acceptability}) `;
-          }, '') + '\t' + r.newDescriptions.reduce((acc: string, cur: NewDescription) => {
-            return acc + cur.term + ` (${cur.lang}, ${cur.acceptability}) `;
+            return newDescs + cur.term + ` (${cur.lang}, ${cur.type}, ${acceptability}) `;
+          }, '') + '\t' + r.newDescriptions.reduce((newDescs: string, cur: NewDescription) => {
+            return newDescs + cur.term + ` (${cur.lang}, ${cur.acceptability}) `;
           }, '') + '\n';
         }, '');
       this.saveFile(output, this.batchSettings.batchSettingsForm.get('name').value + '.tsv');
@@ -200,19 +200,20 @@ export class TranslateBatchComponent implements OnInit {
         this.results.forEach((r: Result, index: number) => {
           if (this.selection.isSelected(this.resultsDisplay[index])) {
             r.newDescriptions.forEach((d) => {
-              console.log(this.batchSettings.batchSettingsForm.get('type').value);
+              // console.log(this.batchSettings.batchSettingsForm.get('type').value);
+              const languageRefset = d.lang === 'sv' ? 'Swedish' : 'US English';
               switch (this.batchSettings.batchSettingsForm.get('type').value) {
                 // add new acceptable synonym
                 case 'newDescSyn':
-                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tACCEPTABLE\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\t${languageRefset}\tACCEPTABLE\n`;
                   break;
                 // inactivate existing description, add new synonym with same acceptibility
                 case 'replaceDesc':
-                  fileContents += `${r.descriptionItem.conceptId}\t${d.descriptionId}\t${d.oldTerm}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\t\t\t\t\t\t\t${d.term}\tsv\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\t${d.acceptability}\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${d.descriptionId}\t${d.oldTerm}\t${d.oldTerm}\t${this.batchSettings.batchSettingsForm.get('inactivationReason').value}\t\t\t\t\t\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\t${languageRefset}\t${d.acceptability}\n`;
                   break;
                 // change acceptibility of existing description, add new preferred synonym
                 case 'newDescPT':
-                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\tSwedish\tPREFERRED\n`;
+                  fileContents += `${r.descriptionItem.conceptId}\t${r.descriptionItem.fsn}\t\t${d.term}\t${d.lang}\t${caseSignificanceMap[d.caseSignificance]}\tSYNONYM\t${languageRefset}\tPREFERRED\n`;
                   break;
                 default:
               }
@@ -287,7 +288,7 @@ export class TranslateBatchComponent implements OnInit {
     isAllSelected() {
       const numSelected = this.selection.selected.length;
       const numRows = this.resultsDisplay.length;
-      return numSelected == numRows;
+      return numSelected === numRows;
     }
 
     /** Selects all rows if they are not all selected; otherwise clear selection. */

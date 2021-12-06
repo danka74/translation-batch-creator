@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
-import { MatExpansionPanel } from '@angular/material/expansion';
 
 export interface Criterium {
   qualifier: string;
@@ -58,7 +57,7 @@ export class CriteriaComponent implements OnInit {
   }
 
   clearForm() {
-    this.criteriaForm.reset({qualifier: 'exist', present: true, lang: '', regexp: ''});
+    this.criteriaForm.reset({qualifier: 'exist', present: true, lang: '', type: '', accept: '', regexp: ''});
     this.criteriaForm.markAsPristine();
     this.criteriaForm.markAsUntouched();
   }
