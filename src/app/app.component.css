@@ -1,4 +1,7 @@
-.batch {
-  padding: 5px;
-  margin: 5px;
+mat-sidenav-container {
+  position: fixed;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
 }
