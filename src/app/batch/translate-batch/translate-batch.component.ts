@@ -231,7 +231,7 @@ export class TranslateBatchComponent implements OnInit {
             filename += '_DescriptionAdditions_part_';
             break;
         }
-        filename += this.snomed.resultMetadata.part;
+        filename += this.snomed.resultMetadata.part + '.tsv';
         this.saveFile(fileContents, filename);
       }
     }
