@@ -239,7 +239,7 @@ export class TranslateBatchComponent implements OnInit {
     saveFile(o: any, name: string) {
       const a = document.createElement('a');
       if (typeof o === 'string') {
-        a.href = URL.createObjectURL(new Blob([o], {type: 'text/plain'}));
+        a.href = URL.createObjectURL(new Blob([o], {type: 'text/tab-separated-values'}));
       } else {
         a.href = URL.createObjectURL(new Blob([JSON.stringify(o, null, 2)], {type : 'application/json'}));
       }
