@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 import { CriteriaComponent } from './criteria.component';
 
@@ -10,7 +10,7 @@ describe('CriteriaComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CriteriaComponent ],
-      providers: [ FormBuilder ],
+      providers: [ UntypedFormBuilder ],
     })
     .compileComponents();
   }));

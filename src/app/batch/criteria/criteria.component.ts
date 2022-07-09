@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 
 export interface Criterium {
@@ -50,7 +50,7 @@ export class CriteriaComponent implements OnInit {
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     ) { }
 
   ngOnInit(): void {

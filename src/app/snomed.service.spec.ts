@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, UntypedFormBuilder } from '@angular/forms';
 
 
 import { SnomedService, createRegExp } from './snomed.service';
@@ -15,7 +15,7 @@ describe('SnomedService', () => {
         ReactiveFormsModule, FormsModule,
       ],
       providers: [
-        SnomedService, FormBuilder
+        SnomedService, UntypedFormBuilder
       ]
     });
     service = TestBed.inject(SnomedService);

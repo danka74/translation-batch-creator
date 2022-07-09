@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, ValidationErrors } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, ValidationErrors } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { MatExpansionPanel } from '@angular/material/expansion';
 
@@ -27,7 +27,7 @@ export class ReplaceComponent implements OnInit {
     replaceWith: '',
   }, {validators: this.duplicateValidator.bind(this)});
 
-  duplicateValidator(control: FormGroup): ValidationErrors | null {
+  duplicateValidator(control: UntypedFormGroup): ValidationErrors | null {
     const duplicate = this.replace.find((r: Replace) => {
       return r.lang === control.get('lang').value &&
         r.replace === control.get('replace').value &&
@@ -39,7 +39,7 @@ export class ReplaceComponent implements OnInit {
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) { }
 
   ngOnInit(): void {

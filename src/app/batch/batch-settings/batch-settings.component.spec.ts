@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 import { BatchSettingsComponent } from './batch-settings.component';
 
@@ -10,7 +10,7 @@ describe('BatchSettingsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BatchSettingsComponent ],
-      providers: [ FormBuilder ],
+      providers: [ UntypedFormBuilder ],
     })
     .compileComponents();
   }));

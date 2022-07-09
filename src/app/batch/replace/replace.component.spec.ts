@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 import { ReplaceComponent } from './replace.component';
 
@@ -11,7 +11,7 @@ describe('ReplaceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ReplaceComponent ],
       providers: [
-        FormBuilder
+        UntypedFormBuilder
       ]
     })
     .compileComponents();

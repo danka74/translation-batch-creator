@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MenuService } from 'src/app/menu.service';
 import { Icd10Result, Icd10ResultItem, SnomedService } from 'src/app/snomed.service';
 import { MatExpansionPanel } from '@angular/material/expansion';
@@ -35,7 +35,7 @@ export class Icd10Component implements OnInit {
 
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public snomed: SnomedService,
     private menu: MenuService) {
 
